@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "956910471741",
+    "project_id": "rainbender-7eeb2",
+    "storage_bucket": "rainbender-7eeb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956910471741:android:e469187551089853933854",
+        "android_client_info": {
+          "package_name": "com.ace.rainbender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956910471741-flgd5ev09jrc462r3b3eq23ah7oh0q2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZnle_6Cg1r30ift3vhLHqoZ7UNzUdvrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956910471741-flgd5ev09jrc462r3b3eq23ah7oh0q2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

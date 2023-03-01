@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">RainBender</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="greetings">Hi, feeling rainy today?</string>
+    <string name="get_to_know">Let\'s get to know each other</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="email">Email</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username_password_incorrect">Username or Password is Incorrect</string>
+    <string name="username_empty">Username is empty!</string>
+    <string name="password_empty">Password is empty!</string>
+    <string name="email_empty">Email is empty!</string>
+    <string name="password_mismatch">Password mismatch</string>
+    <string name="too_short">Must be 3 character or more</string>
+    <string name="error_empty">Can\'t be empty!</string>
+    <string name="password_too_short">Cannot be less than 8 character</string>
+    <string name="invalid_email">Invalid email!</string>
 </resources>

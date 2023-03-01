@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Headline">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="textFillColor">?attr/textFillColor</item>
+    </style>
+    <style name="HeadlineDesc">
+        <item name="android:textStyle">normal</item>
+        <item name="textFillColor">?attr/textFillColor</item>
+    </style>
+    <style name="Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>
