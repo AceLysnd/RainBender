@@ -27,4 +27,8 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="radar">Radar</string>
     <string name="news">News</string>
+    <string name="weather">Weather</string>
+    <string name="temperature">26°C</string>
+    <string name="date">23</string>
+    <string name="month">January</string>
 </resources>
