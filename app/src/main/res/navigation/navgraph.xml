@@ -43,4 +43,19 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/bookmarkFragment"
+        android:name="com.ace.rainbender.ui.view.BookmarkFragment"
+        android:label="fragment_bookmark"
+        tools:layout="@layout/fragment_bookmark" />
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.ace.rainbender.ui.view.NewsFragment"
+        android:label="fragment_news"
+        tools:layout="@layout/fragment_news" />
+    <fragment
+        android:id="@+id/radarMapFragment"
+        android:name="com.ace.rainbender.ui.view.RadarMapFragment"
+        android:label="fragment_radar_map"
+        tools:layout="@layout/fragment_radar_map" />
 </navigation>

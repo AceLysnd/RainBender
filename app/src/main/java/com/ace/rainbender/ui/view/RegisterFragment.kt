@@ -10,17 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ace.rainbender.R
 import com.ace.rainbender.data.local.user.AccountEntity
-import com.ace.rainbender.databinding.FragmentLoginBinding
 import com.ace.rainbender.databinding.FragmentRegisterBinding
-import com.ace.rainbender.ui.viewmodel.LoginFragmentViewModel
 import com.ace.rainbender.ui.viewmodel.RegisterFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
+
     private val viewModel: RegisterFragmentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
