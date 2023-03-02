@@ -6,5 +6,6 @@ data class Prefs(
     val email: String,
     val password: String,
     val loginStatus: Boolean,
-    val profilePicture: String
+    val profilePicture: String,
+    val hideBotnav: Boolean
 )

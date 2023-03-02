@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.ace.rainbender.R
 import com.ace.rainbender.ui.viewmodel.SplashScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SplashScreenFragment : Fragment() {
@@ -35,8 +37,11 @@ class SplashScreenFragment : Fragment() {
         viewModel.getLoginStatus().observe(viewLifecycleOwner){
             if(it) {
                 goToHome()
+                STATUS_LOGIN = true
+                activity?.findViewById(R.id.botnav)
             } else {
                 goToLogin()
+                STATUS_LOGIN = false
             }
         }
     }
@@ -53,5 +58,12 @@ class SplashScreenFragment : Fragment() {
         }, 1500)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.setHideBotnav(STATUS_LOGIN)
+    }
+    companion object {
+        var STATUS_LOGIN = false
+    }
 
 }

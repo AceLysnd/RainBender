@@ -23,4 +23,8 @@
     <string name="error_empty">Can\'t be empty!</string>
     <string name="password_too_short">Cannot be less than 8 character</string>
     <string name="invalid_email">Invalid email!</string>
+    <string name="home">Home</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="radar">Radar</string>
+    <string name="news">News</string>
 </resources>

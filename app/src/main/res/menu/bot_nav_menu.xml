@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/home"
+        android:id="@+id/home"
+        android:icon="@drawable/home"/>
+    <item
+        android:title="@string/bookmarks"
+        android:id="@+id/bookmark"
+        android:icon="@drawable/bookmark"/>
+    <item
+        android:title="@string/radar"
+        android:id="@+id/radar"
+        android:icon="@drawable/radar"/>
+    <item
+        android:title="@string/news"
+        android:id="@+id/news"
+        android:icon="@drawable/news"/>
+</menu>

@@ -56,4 +56,12 @@ class LocalRepository @Inject constructor(
     fun getProfilePicture(): LiveData<String> {
         return prefs.getProfilePicture().asLiveData()
     }
+
+    suspend fun setHideBotnav(hideBotnav: Boolean) {
+        prefs.setHideBotnav(hideBotnav)
+    }
+
+    fun getHideBotnav(): LiveData<Boolean> {
+        return prefs.getHideBotnav().asLiveData()
+    }
 }

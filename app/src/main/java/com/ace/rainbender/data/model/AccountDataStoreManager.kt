@@ -32,6 +32,12 @@ class AccountDataStoreManager @Inject constructor(@ActivityContext private val c
         }
     }
 
+    suspend fun setHideBotnav(hideBotnav: Boolean) {
+        context.accountDataStore.edit { preferences ->
+            preferences[HIDE_BOTNAV] = hideBotnav
+        }
+    }
+
     fun getAccount(): Flow<Prefs> {
         return context.accountDataStore.data.map { preferences ->
             Prefs(
@@ -40,7 +46,8 @@ class AccountDataStoreManager @Inject constructor(@ActivityContext private val c
                 preferences[ACCOUNT_EMAIL] ?: "",
                 preferences[ACCOUNT_PASSWORD] ?: "",
                 preferences[LOGGED_IN_STATUS] ?: false,
-                preferences[ACCOUNT_PROFILE_PICTURE] ?: ""
+                preferences[ACCOUNT_PROFILE_PICTURE] ?: "",
+                preferences[HIDE_BOTNAV] ?: false,
             )
         }
     }
@@ -63,6 +70,12 @@ class AccountDataStoreManager @Inject constructor(@ActivityContext private val c
         }
     }
 
+    fun getHideBotnav(): Flow<Boolean> {
+        return context.accountDataStore.data.map { preferences ->
+            preferences[HIDE_BOTNAV] ?: false
+        }
+    }
+
 
     companion object {
         private const val DATASTORE_NAME = "account_prefs"
@@ -78,6 +91,8 @@ class AccountDataStoreManager @Inject constructor(@ActivityContext private val c
         private val ACCOUNT_ID = longPreferencesKey("account_id")
 
         private val LOGGED_IN_STATUS = booleanPreferencesKey("logged_in_status")
+
+        private val HIDE_BOTNAV = booleanPreferencesKey("hide_botnav")
 
         private val Context.accountDataStore by preferencesDataStore(name = DATASTORE_NAME)
     }
