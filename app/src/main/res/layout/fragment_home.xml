@@ -47,7 +47,7 @@
             android:id="@+id/tv_timezone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:text="GMT+7"
             android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/tv_time"
