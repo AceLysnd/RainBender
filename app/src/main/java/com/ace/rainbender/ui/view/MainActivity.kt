@@ -3,13 +3,10 @@ package com.ace.rainbender.ui.view
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Address
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.*
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -21,6 +18,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ace.rainbender.R
+import com.ace.rainbender.data.local.localweather.DailyWeatherEntity
+import com.ace.rainbender.data.model.weather.Daily
+import com.ace.rainbender.data.model.weather.Hourly
 import com.ace.rainbender.databinding.ActivityMainBinding
 import com.ace.rainbender.ui.viewmodel.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -42,10 +42,16 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private val locationPermissionCode = 2
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.deleteDailyWeather()
+
+        CURRENT_TIME = LocalDateTime.now().toString()
+        CURRENT_TIMEZONE = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
 
         lateinit var bottomNav : BottomNavigationView
 
@@ -67,7 +73,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             }
         }
 
-        bottomNav = binding.botnav as BottomNavigationView
+        bottomNav = binding.botnav
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
@@ -91,7 +97,51 @@ class MainActivity : AppCompatActivity(), LocationListener {
             }
         }
 
+
         getLocation()
+        getWeatherForecast()
+    }
+
+    private fun saveWeatherForecast() {
+
+    }
+
+    private fun getWeatherForecast() {
+        viewModel.getWeatherForecast()
+
+        viewModel.weatherForecast.observe(this){
+            fetchHourlyWeather(it.hourly!!)
+            fetchDailyWeather(it.daily!!)
+        }
+    }
+
+    private var iDaily = 0
+    private fun fetchDailyWeather(daily: Daily) {
+        if (iDaily < 7) {
+            val dailyWeather = DailyWeatherEntity (
+                dailyId = iDaily+1.toLong(),
+                time = daily.time!![iDaily]!!,
+                temperatureMin = daily.temperature2mMin!![iDaily]!!,
+                temperatureMax = daily.temperature2mMax!![iDaily]!!,
+                weatherCode = daily.weathercode!![iDaily]!!
+            )
+            viewModel.insertDailyWeather(dailyWeather)
+
+            iDaily += 1
+            fetchDailyWeather(daily)
+            Log.d("daitemp",daily.temperature2mMin[4].toString())
+            Log.d("daitemp",daily.temperature2mMin[5].toString())
+            Log.d("daitemp",daily.temperature2mMin[6].toString())
+        }
+
+
+    }
+
+    private fun fetchHourlyWeather(hourly: Hourly) {
+        TEST_TEMP = hourly.temperature2m!![1].toString().substring(0,2)
+        var time = CURRENT_TIME.subSequence(11,13)
+        var currentTime = 0 + Integer.parseInt(time.toString())
+        CURRENT_TEMPERATURE = hourly.temperature2m!![currentTime].toString().substring(0,2)
     }
 
     private fun getLocation() {
@@ -99,7 +149,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionCode)
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 50000000, 170f, this)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 50000, 170f, this)
 
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -113,7 +163,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         LONGITUDE = location.longitude
         CURRENT_LOCATION = list[0].locality
 
-//        Toast.makeText(this,list[0].getAddressLine(0).toString(), Toast.LENGTH_LONG).show()
+        Toast.makeText(this,list[0].getAddressLine(0).toString(), Toast.LENGTH_LONG).show()
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -142,8 +192,17 @@ class MainActivity : AppCompatActivity(), LocationListener {
     companion object {
         var LATITUDE:Double = 0.0
         var LONGITUDE:Double = 0.0
-        var CURRENT_LOCATION = ""
+        var CURRENT_LOCATION = "location error"
         var CURRENT_TIME = ""
         var CURRENT_TIMEZONE = ""
+        var CURRENT_TEMPERATURE = ""
+        var CURRENT_WEATHERCODE = 0
+
+        var TEST_TEMP = ""
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.deleteDailyWeather()
     }
 }

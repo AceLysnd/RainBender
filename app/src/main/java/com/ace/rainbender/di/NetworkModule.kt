@@ -32,8 +32,9 @@ object NetworkModule {
     fun provideRetrofit(
         okHttpClient: OkHttpClient
     ): Retrofit {
+        val BASE_URL = "https://api.open-meteo.com/v1/"
         return Retrofit.Builder()
-            .baseUrl("https://api.open-meteo.com/v1/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

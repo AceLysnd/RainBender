@@ -1,7 +1,15 @@
 package com.ace.rainbender.data.model.weather
 
+
+import com.google.gson.annotations.SerializedName
+
 data class Hourly(
-    val temperature_2m: List<Double>,
-    val time: List<String>,
-    val weathercode: List<Int>
+    @SerializedName("relativehumidity_2m")
+    val relativehumidity2m: List<Int?>?,
+    @SerializedName("temperature_2m")
+    val temperature2m: List<Double?>?,
+    @SerializedName("time")
+    val time: List<String?>?,
+    @SerializedName("weathercode")
+    val weathercode: List<Int?>?
 )

@@ -22,10 +22,10 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/botnav"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bot_nav_menu"
         android:visibility="gone"
+        app:menu="@menu/bot_nav_menu"
         tools:visibility="visible">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

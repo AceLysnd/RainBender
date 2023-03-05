@@ -4,14 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="58dp"
+    android:background="@color/theme_2"
     tools:context=".ui.view.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/theme_2"
         android:padding="8dp">
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <TextView
             android:id="@+id/tv_temperature"
@@ -80,6 +90,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -125,11 +136,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_hourly_forecast">
 
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Swipe to refresh" />
+
+            <ProgressBar
+                android:id="@+id/pb_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_daily_forecast"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 tools:listitem="@layout/item_daily_forecast"
                 tools:itemCount="7"/>
         </androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 package com.ace.rainbender.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -63,6 +64,8 @@ class LoginFragment : Fragment() {
         account?.let {
             val username = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
+
+            Log.d("Check Login", account.username)
 
             val verified = username == account.username && password == account.password
             if (verified) {

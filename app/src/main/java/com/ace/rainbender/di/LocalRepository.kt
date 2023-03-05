@@ -2,6 +2,9 @@ package com.ace.rainbender.di
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import com.ace.rainbender.data.local.localweather.DailyWeatherDataSource
+import com.ace.rainbender.data.local.localweather.DailyWeatherDatabase
+import com.ace.rainbender.data.local.localweather.DailyWeatherEntity
 import com.ace.rainbender.data.local.user.AccountDataSource
 import com.ace.rainbender.data.local.user.AccountEntity
 import com.ace.rainbender.data.model.AccountDataStoreManager
@@ -11,6 +14,7 @@ import javax.inject.Inject
 class LocalRepository @Inject constructor(
     private val accountDataSource: AccountDataSource,
     private val prefs: AccountDataStoreManager,
+    private val dailyWeatherDataSource: DailyWeatherDataSource
 ) {
 
     suspend fun getAccountById(id: Long): AccountEntity? {
@@ -63,5 +67,21 @@ class LocalRepository @Inject constructor(
 
     fun getHideBotnav(): LiveData<Boolean> {
         return prefs.getHideBotnav().asLiveData()
+    }
+
+    suspend fun insertDailyWeather(weatherEntity: DailyWeatherEntity){
+        dailyWeatherDataSource.insertWeather(weatherEntity)
+    }
+
+    suspend fun getDailyWeatherById(id: Long): DailyWeatherEntity? {
+        return dailyWeatherDataSource.getWeatherById(id)
+    }
+
+    suspend fun getAllDaily(): List<DailyWeatherEntity> {
+        return dailyWeatherDataSource.getAllDaily()
+    }
+
+    suspend fun deleteDailyDatabase() {
+        return dailyWeatherDataSource.deleteDatabase()
     }
 }
