@@ -1,4 +1,4 @@
-package com.ace.rainbender.data.local.localweather
+package com.ace.rainbender.data.local.localweather.daily
 
 import javax.inject.Inject
 

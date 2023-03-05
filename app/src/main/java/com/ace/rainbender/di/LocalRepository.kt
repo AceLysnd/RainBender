@@ -2,9 +2,10 @@ package com.ace.rainbender.di
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.ace.rainbender.data.local.localweather.DailyWeatherDataSource
-import com.ace.rainbender.data.local.localweather.DailyWeatherDatabase
-import com.ace.rainbender.data.local.localweather.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDataSource
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDataSource
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
 import com.ace.rainbender.data.local.user.AccountDataSource
 import com.ace.rainbender.data.local.user.AccountEntity
 import com.ace.rainbender.data.model.AccountDataStoreManager
@@ -17,6 +18,7 @@ class LocalRepository @Inject constructor(
     private val accountDataSource: AccountDataSource,
     private val prefs: AccountDataStoreManager,
     private val dailyWeatherDataSource: DailyWeatherDataSource,
+    private val hourlyWeatherDataSource: HourlyWeatherDataSource,
     private val locationPrefs: LocationDataStoreManager
 ) {
 
@@ -79,6 +81,19 @@ class LocalRepository @Inject constructor(
     suspend fun deleteDailyDatabase() {
         return dailyWeatherDataSource.deleteDatabase()
     }
+
+    suspend fun insertHourlyWeather(weatherEntity: HourlyWeatherEntity){
+        hourlyWeatherDataSource.insertWeather(weatherEntity)
+    }
+
+    suspend fun getAllHourly(): List<HourlyWeatherEntity> {
+        return hourlyWeatherDataSource.getAllHourly()
+    }
+
+    suspend fun deleteHourlyDatabase() {
+        return hourlyWeatherDataSource.deleteDatabase()
+    }
+
 
     suspend fun setLocation(latitude: Double, longitude: Double, location: String) {
         locationPrefs.setLocation(latitude, longitude, location)

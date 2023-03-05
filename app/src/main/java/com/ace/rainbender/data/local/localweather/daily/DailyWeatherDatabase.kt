@@ -1,4 +1,4 @@
-package com.ace.rainbender.data.local.localweather
+package com.ace.rainbender.data.local.localweather.daily
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

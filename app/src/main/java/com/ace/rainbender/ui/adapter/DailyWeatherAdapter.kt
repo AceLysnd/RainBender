@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.rainbender.R
-import com.ace.rainbender.data.local.localweather.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
 import com.ace.rainbender.databinding.ItemDailyForecastBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -43,7 +43,6 @@ class DailyWeatherAdapter(
 
     inner class DailyWeatherViewHolder(private val binding: ItemDailyForecastBinding) :
         RecyclerView.ViewHolder(binding.root) {
-//        private val poster: ImageView = binding.itemMoviePoster
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(daily: DailyWeatherEntity) {

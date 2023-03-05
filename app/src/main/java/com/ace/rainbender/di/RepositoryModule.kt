@@ -1,12 +1,11 @@
 package com.ace.rainbender.di
 
 import android.content.Context
-import com.ace.rainbender.data.local.localweather.DailyWeatherDataSource
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDataSource
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDataSource
 import com.ace.rainbender.data.local.user.AccountDataSource
 import com.ace.rainbender.data.model.AccountDataStoreManager
-import com.ace.rainbender.data.model.Location
 import com.ace.rainbender.data.model.LocationDataStoreManager
-import com.ace.rainbender.data.model.Prefs
 import com.ace.rainbender.data.services.WeatherApiHelper
 import dagger.Module
 import dagger.Provides
@@ -28,8 +27,9 @@ object RepositoryModule {
     fun provideDataSource(accountDataSource: AccountDataSource,
                           prefs: AccountDataStoreManager,
                           weatherDataSource: DailyWeatherDataSource,
+                          weatherDataSource2: HourlyWeatherDataSource,
                           locationPrefs: LocationDataStoreManager) =
-        LocalRepository(accountDataSource, prefs, weatherDataSource, locationPrefs)
+        LocalRepository(accountDataSource, prefs, weatherDataSource,weatherDataSource2, locationPrefs)
 
 
     @ViewModelScoped

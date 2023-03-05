@@ -1,16 +1,13 @@
 package com.ace.rainbender.ui.view
 
 import android.Manifest
-import android.content.ContentProviderClient
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -21,7 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ace.rainbender.R
-import com.ace.rainbender.data.local.localweather.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
 import com.ace.rainbender.data.model.weather.Daily
 import com.ace.rainbender.data.model.weather.Hourly
 import com.ace.rainbender.databinding.ActivityMainBinding
@@ -141,11 +139,29 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     }
 
+    private var iHourly = 0
     private fun fetchHourlyWeather(hourly: Hourly) {
-        TEST_TEMP = hourly.temperature2m!![1].toString().substring(0,2)
+        TEST_TEMP = hourly.temperature2m!![1].toString().substring(0,2) + "°C"
         var time = CURRENT_TIME.subSequence(11,13)
         var currentTime = 0 + Integer.parseInt(time.toString())
         CURRENT_TEMPERATURE = hourly.temperature2m!![currentTime].toString().substring(0,2)
+        CURRENT_WEATHERCODE = hourly.weathercode!![currentTime]!!
+
+        if (iHourly < 49) {
+            val dailyWeather = HourlyWeatherEntity (
+                hourlyId = iHourly+1.toLong(),
+                time = hourly.time!![iHourly]!!,
+                temperature = hourly.temperature2m!![iHourly]!!,
+                humidity = hourly.relativehumidity2m!![iHourly]!!,
+                weatherCode = hourly.weathercode!![iHourly]!!
+            )
+            viewModel.insertHourlyWeather(dailyWeather)
+
+            iHourly += 1
+            fetchHourlyWeather(hourly)
+            Log.d("daitemp",hourly.temperature2m[0].toString())
+
+        }
     }
 
     private fun getLocation() {

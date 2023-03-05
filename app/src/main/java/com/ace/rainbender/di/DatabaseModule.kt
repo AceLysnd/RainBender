@@ -2,11 +2,12 @@ package com.ace.rainbender.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ace.rainbender.data.local.localweather.DailyWeatherDao
-import com.ace.rainbender.data.local.localweather.DailyWeatherDatabase
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDao
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDatabase
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDao
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDatabase
 import com.ace.rainbender.data.local.user.AccountDao
 import com.ace.rainbender.data.local.user.AccountDatabase
-import com.ace.rainbender.data.local.user.AccountEntity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +29,11 @@ class DatabaseModule {
     }
 
     @Provides
+    fun provideHourlyDao(hourlyWeatherDatabase: HourlyWeatherDatabase): HourlyWeatherDao {
+        return hourlyWeatherDatabase.hourlyWeatherDao
+    }
+
+    @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context):
             AccountDatabase {
@@ -40,12 +46,23 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideWeatherDatabase(@ApplicationContext appContext: Context):
+    fun provideDailyWeatherDatabase(@ApplicationContext appContext: Context):
             DailyWeatherDatabase {
         return Room.databaseBuilder(
             appContext,
             DailyWeatherDatabase::class.java,
             "daily_weather_database"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideHourlyWeatherDatabase(@ApplicationContext appContext: Context):
+            HourlyWeatherDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            HourlyWeatherDatabase::class.java,
+            "hourly_weather_database"
         ).build()
     }
 }

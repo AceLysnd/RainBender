@@ -1,9 +1,8 @@
-package com.ace.rainbender.data.local.localweather
+package com.ace.rainbender.data.local.localweather.daily
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.ace.rainbender.data.model.weather.Daily
 
 @Dao
 interface DailyWeatherDao {

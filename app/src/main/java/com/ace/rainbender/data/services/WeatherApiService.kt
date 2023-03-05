@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 interface WeatherApiService {
 
-    @GET("forecast?latitude=-7.80&longitude=110.36&hourly=temperature_2m,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia/Bangkok")
+    @GET("forecast?latitude=-7.76&longitude=110.43&hourly=temperature_2m,relativehumidity_2m,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=Asia%2FBangkok")
     suspend fun getWeatherForecast(
 //        @Query("latitude") latitude: Double,
 //        @Query("longitude") longitude: Double,

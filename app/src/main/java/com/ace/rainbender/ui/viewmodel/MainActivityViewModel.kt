@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.loader.content.Loader
-import com.ace.rainbender.data.local.localweather.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
 import com.ace.rainbender.data.model.Location
 import com.ace.rainbender.data.model.weather.WeatherResponse
 import com.ace.rainbender.di.LocalRepository
@@ -40,9 +40,16 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun insertHourlyWeather(hourlyWeatherEntity: HourlyWeatherEntity){
+        viewModelScope.launch {
+            localRepository.insertHourlyWeather(hourlyWeatherEntity)
+        }
+    }
+
     fun deleteDailyWeather() {
         viewModelScope.launch {
             localRepository.deleteDailyDatabase()
+            localRepository.deleteHourlyDatabase()
         }
     }
 
