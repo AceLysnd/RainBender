@@ -1,13 +1,16 @@
 package com.ace.rainbender.ui.view
 
 import android.Manifest
+import android.content.ContentProviderClient
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -23,6 +26,8 @@ import com.ace.rainbender.data.model.weather.Daily
 import com.ace.rainbender.data.model.weather.Hourly
 import com.ace.rainbender.databinding.ActivityMainBinding
 import com.ace.rainbender.ui.viewmodel.MainActivityViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
@@ -40,6 +45,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private val locationPermissionCode = 2
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -66,9 +73,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 destination.id == R.id.newsFragment ||
                 destination.id == R.id.radarMapFragment) {
 
+                supportActionBar!!.show()
                 binding.botnav.visibility = View.VISIBLE
             } else {
-
+                supportActionBar!!.hide()
                 binding.botnav.visibility = View.GONE
             }
         }
@@ -97,13 +105,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
             }
         }
 
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocation()
         getWeatherForecast()
-    }
-
-    private fun saveWeatherForecast() {
-
     }
 
     private fun getWeatherForecast() {
@@ -149,7 +153,24 @@ class MainActivity : AppCompatActivity(), LocationListener {
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionCode)
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 50000, 170f, this)
+        locationManager.removeUpdates(this)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                Log.d("fusedloctest",location?.latitude.toString())
+                Log.d("fusedloctest",location?.longitude.toString())
+
+                val geocoder = Geocoder(this, Locale.getDefault())
+
+                val list: List<Address> =
+                    geocoder.getFromLocation(location?.latitude!!, location.longitude, 1)
+
+                LATITUDE = location.latitude
+                LONGITUDE = location.longitude
+                CURRENT_LOCATION = list[0].locality
+
+            }
 
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -158,10 +179,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         val list: List<Address> =
             geocoder.getFromLocation(location.latitude, location.longitude, 1)
-
-        LATITUDE = location.latitude
-        LONGITUDE = location.longitude
-        CURRENT_LOCATION = list[0].locality
 
         Toast.makeText(this,list[0].getAddressLine(0).toString(), Toast.LENGTH_LONG).show()
     }

@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.loader.content.Loader
 import com.ace.rainbender.data.local.localweather.DailyWeatherEntity
+import com.ace.rainbender.data.model.Location
 import com.ace.rainbender.data.model.weather.WeatherResponse
 import com.ace.rainbender.di.LocalRepository
 import com.ace.rainbender.di.WeatherRepository
@@ -20,7 +22,11 @@ class MainActivityViewModel @Inject constructor(
 
     val _weatherForecast = MutableLiveData<WeatherResponse>()
     val weatherForecast: LiveData<WeatherResponse>
-        get() = _weatherForecast
+    get() = _weatherForecast
+
+//    val _location = MutableLiveData<Location>()
+//    val location: LiveData<Location>
+//    get() = _location
 
     fun getWeatherForecast(){
         viewModelScope.launch {
@@ -37,6 +43,17 @@ class MainActivityViewModel @Inject constructor(
     fun deleteDailyWeather() {
         viewModelScope.launch {
             localRepository.deleteDailyDatabase()
+        }
+    }
+
+    fun getLocationPref(): LiveData<Location> {
+//        _location.postValue(localRepository.getLocation())
+        return localRepository.getLocation()
+    }
+
+    fun setLocation(latitude: Double, longitude: Double, location: String) {
+        viewModelScope.launch {
+            localRepository.setLocation(latitude, longitude, location)
         }
     }
 }

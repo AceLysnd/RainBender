@@ -104,20 +104,33 @@ class HomeFragment : Fragment() {
             } else if (weatherCode in 1..2) {
                 ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
                 tvWeather.text = "Partly Cloudy"
-            } else if (weatherCode in 3..48) {
+            } else if (weatherCode == 3) {
                 ivWeatherIcon.setImageResource(R.drawable.wecloudy)
-            } else if (weatherCode in 51..67) {
+                tvWeather.text = "Overcast"
+            } else if (weatherCode in 45..48) {
+                ivWeatherIcon.setImageResource(R.drawable.wecloudy)
+                tvWeather.text = "Fog"
+            } else if (weatherCode in 51..57) {
                 ivWeatherIcon.setImageResource(R.drawable.werain)
-            } else if (weatherCode in 71..75) {
+                tvWeather.text = "Drizzle"
+            } else if (weatherCode in 61..67) {
+                ivWeatherIcon.setImageResource(R.drawable.werain)
+                tvWeather.text = "Rain"
+            }else if (weatherCode in 71..75) {
                 ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                tvWeather.text = "Snowfall"
             } else if (weatherCode == 77) {
                 ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                tvWeather.text = "Snow grains"
             } else if (weatherCode in 80..82) {
                 ivWeatherIcon.setImageResource(R.drawable.werain)
+                tvWeather.text = "Rain showers"
             } else if (weatherCode in 85..86) {
                 ivWeatherIcon.setImageResource(R.drawable.wesnow)
+                tvWeather.text = "Snow showers"
             } else if (weatherCode in 95..99) {
                 ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
+                tvWeather.text = "Thunderstorm"
             }
         }
 
