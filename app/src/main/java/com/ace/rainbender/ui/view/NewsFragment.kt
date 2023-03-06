@@ -1,5 +1,7 @@
 package com.ace.rainbender.ui.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,10 +11,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ace.rainbender.R
 import com.ace.rainbender.data.model.news.Article
 import com.ace.rainbender.data.services.news.NewsApiHelper
 import com.ace.rainbender.databinding.FragmentNewsBinding
@@ -60,12 +60,14 @@ class NewsFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        newsAdapter = NewsAdapter(mutableListOf()) { news -> onNewsClick() }
+        newsAdapter = NewsAdapter(mutableListOf()) { article -> onNewsClick(article) }
         newsRv.adapter = newsAdapter
     }
 
-    private fun onNewsClick() {
-
+    private fun onNewsClick(article: Article?) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(article!!.url)
+        startActivity(intent)
     }
 
     private fun loadNews() {
