@@ -20,6 +20,4 @@ interface WeatherApiService {
         @Query("daily") daily: Array<String> = arrayOf("weathercode", "temperature_2m_max", "temperature_2m_min", "uv_index_max"),
         @Query("timezone") timezone: String = "Asia/Bangkok"
     ): WeatherResponse
-
-
 }
