@@ -1,14 +1,18 @@
 package com.ace.rainbender.ui.view
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ace.rainbender.R
 import com.ace.rainbender.data.model.news.Article
 import com.ace.rainbender.data.services.news.NewsApiHelper
 import com.ace.rainbender.databinding.FragmentNewsBinding
@@ -56,7 +60,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        newsAdapter = NewsAdapter(mutableListOf()) {news -> onNewsClick()}
+        newsAdapter = NewsAdapter(mutableListOf()) { news -> onNewsClick() }
         newsRv.adapter = newsAdapter
     }
 
@@ -67,17 +71,14 @@ class NewsFragment : Fragment() {
     private fun loadNews() {
         val apiService = NewsApiHelper()
 
-        viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
-            binding.pbPost.isVisible = isLoading
-            binding.rvNews.isVisible = !isLoading
-        }
+        binding.pbPost.isVisible = true
+        val postDelayed = Handler(Looper.myLooper()!!).postDelayed({
+            binding.rvNews.isVisible = true
+            binding.pbPost.isVisible = false
+        }, 2000)
 
-        viewModel.errorState.observe(viewLifecycleOwner) { errorData ->
-            binding.tvError.isVisible = errorData.first
-            errorData.second?.message?.let {
-                binding.tvError.text = it
-            }
-        }
+
+
         apiService.getNews {
             newsAdapter.setItems(it!!.articles)
         }
