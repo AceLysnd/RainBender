@@ -7,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.ace.rainbender.R
 
-class RadarMapFragment : Fragment() {
+class SearchCityFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_radar_map, container, false)
+        return inflater.inflate(R.layout.fragment_search_city, container, false)
     }
-
 }

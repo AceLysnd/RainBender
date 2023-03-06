@@ -33,4 +33,6 @@
     <string name="month">January</string>
     <string name="dash">-</string>
     <string name="weather_related_news">Weather-Related News</string>
+    <string name="very_long_city_name">VERY LONG CITY NAME</string>
+    <string name="bookmarks_headline">Bookmarks</string>
 </resources>
