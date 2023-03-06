@@ -8,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.ace.rainbender.R
 import com.ace.rainbender.ui.viewmodel.SplashScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SplashScreenFragment : Fragment() {

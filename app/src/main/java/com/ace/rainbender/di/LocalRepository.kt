@@ -2,15 +2,24 @@ package com.ace.rainbender.di
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDataSource
+import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDataSource
+import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
 import com.ace.rainbender.data.local.user.AccountDataSource
 import com.ace.rainbender.data.local.user.AccountEntity
 import com.ace.rainbender.data.model.AccountDataStoreManager
+import com.ace.rainbender.data.model.Location
+import com.ace.rainbender.data.model.LocationDataStoreManager
 import com.ace.rainbender.data.model.Prefs
 import javax.inject.Inject
 
 class LocalRepository @Inject constructor(
     private val accountDataSource: AccountDataSource,
     private val prefs: AccountDataStoreManager,
+    private val dailyWeatherDataSource: DailyWeatherDataSource,
+    private val hourlyWeatherDataSource: HourlyWeatherDataSource,
+    private val locationPrefs: LocationDataStoreManager
 ) {
 
     suspend fun getAccountById(id: Long): AccountEntity? {
@@ -61,7 +70,44 @@ class LocalRepository @Inject constructor(
         prefs.setHideBotnav(hideBotnav)
     }
 
-    fun getHideBotnav(): LiveData<Boolean> {
-        return prefs.getHideBotnav().asLiveData()
+    suspend fun insertDailyWeather(weatherEntity: DailyWeatherEntity){
+        dailyWeatherDataSource.insertWeather(weatherEntity)
+    }
+
+    suspend fun updateDailyWeather(weatherEntity: DailyWeatherEntity){
+        dailyWeatherDataSource.updateWeather(weatherEntity)
+    }
+
+    suspend fun getAllDaily(): List<DailyWeatherEntity> {
+        return dailyWeatherDataSource.getAllDaily()
+    }
+
+    suspend fun deleteDailyDatabase() {
+        return dailyWeatherDataSource.deleteDatabase()
+    }
+
+    suspend fun insertHourlyWeather(weatherEntity: HourlyWeatherEntity){
+        hourlyWeatherDataSource.insertWeather(weatherEntity)
+    }
+
+    suspend fun updateHourlyWeather(weatherEntity: HourlyWeatherEntity){
+        hourlyWeatherDataSource.updateWeather(weatherEntity)
+    }
+
+    suspend fun getAllHourly(): List<HourlyWeatherEntity> {
+        return hourlyWeatherDataSource.getAllHourly()
+    }
+
+    suspend fun deleteHourlyDatabase() {
+        return hourlyWeatherDataSource.deleteDatabase()
+    }
+
+
+    suspend fun setLocation(latitude: Double, longitude: Double, location: String) {
+        locationPrefs.setLocation(latitude, longitude, location)
+    }
+
+    fun getLocation(): LiveData<Location> {
+        return locationPrefs.getLocation().asLiveData()
     }
 }
