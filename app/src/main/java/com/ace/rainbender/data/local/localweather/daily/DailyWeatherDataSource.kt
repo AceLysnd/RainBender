@@ -16,6 +16,10 @@ class DailyWeatherDataSource @Inject constructor(private val dailyWeatherDao: Da
         return dailyWeatherDao.insertWeather(weatherEntity)
     }
 
+    suspend fun updateWeather(weatherEntity: DailyWeatherEntity){
+        return dailyWeatherDao.updateWeather(weatherEntity)
+    }
+
     suspend fun deleteDatabase() {
         return dailyWeatherDao.deleteDatabase()
     }

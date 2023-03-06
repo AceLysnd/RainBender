@@ -2,8 +2,6 @@ package com.ace.rainbender.ui.view
 
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +17,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ace.rainbender.R
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
 import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
+import com.ace.rainbender.data.model.weather.Daily
+import com.ace.rainbender.data.model.weather.Hourly
 import com.ace.rainbender.data.model.weather.WeatherResponse
 import com.ace.rainbender.databinding.FragmentHomeBinding
 import com.ace.rainbender.ui.adapter.DailyWeatherAdapter
@@ -47,10 +47,6 @@ class HomeFragment : Fragment() {
     private lateinit var hourlyWeatherAdapter: HourlyWeatherAdapter
     private lateinit var dailyWeatherAdapter: DailyWeatherAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -71,13 +67,9 @@ class HomeFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        swipeRefreshLayout = binding.swipe
-
-        swipeRefreshLayout.setOnRefreshListener {
+        if (REFRESH) {
             findNavController().navigate(R.id.action_homeFragment_self)
-            Handler().postDelayed(Runnable {
-                swipeRefreshLayout.isRefreshing = false
-            }, 4000)
+            REFRESH = false
         }
 
         hourlyWeatherRv = binding.rvHourlyForecast
@@ -179,6 +171,8 @@ class HomeFragment : Fragment() {
 
         viewModel.weatherForecast.observe(viewLifecycleOwner){
             loadHomeWeather(it)
+            loadHourlyWeather(it.hourly!!)
+            loadDailyWeather(it.daily!!)
         }
 
         viewModel.dailyForecast.observe(viewLifecycleOwner){
@@ -186,6 +180,46 @@ class HomeFragment : Fragment() {
         }
         viewModel.hourlyForecast.observe(viewLifecycleOwner){
             fetchHourlyWeather(it)
+        }
+    }
+
+    private var iDaily = 0
+    private fun loadDailyWeather(daily: Daily) {
+        if (iDaily < 7) {
+            val dailyWeather = DailyWeatherEntity (
+                dailyId = iDaily+1.toLong(),
+                time = daily.time!![iDaily]!!,
+                temperatureMin = daily.temperature2mMin!![iDaily]!!,
+                temperatureMax = daily.temperature2mMax!![iDaily]!!,
+                weatherCode = daily.weathercode!![iDaily]!!
+            )
+            viewModel.insertDailyWeather(dailyWeather)
+
+            iDaily += 1
+            loadDailyWeather(daily)
+            Log.d("daitemp",daily.temperature2mMin[4].toString())
+            Log.d("daitemp",daily.temperature2mMin[5].toString())
+            Log.d("daitemp",daily.temperature2mMin[6].toString())
+        }
+
+    }
+
+    private var iHourly = 0
+    private fun loadHourlyWeather(hourly: Hourly) {
+        if (iHourly < 49) {
+            val dailyWeather = HourlyWeatherEntity (
+                hourlyId = iHourly+1.toLong(),
+                time = hourly.time!![iHourly]!!,
+                temperature = hourly.temperature2m!![iHourly]!!,
+                humidity = hourly.relativehumidity2m!![iHourly]!!,
+                weatherCode = hourly.weathercode!![iHourly]!!
+            )
+            viewModel.insertHourlyWeather(dailyWeather)
+
+            iHourly += 1
+            loadHourlyWeather(hourly)
+            Log.d("daitemp",hourly.temperature2m[0].toString())
+
         }
     }
 
@@ -210,6 +244,10 @@ class HomeFragment : Fragment() {
         hourlyWeatherAdapter.addData(hourly)
         val position = Integer.parseInt(CURRENT_TIME.subSequence(11,13).toString())
         hourlyWeatherRv.layoutManager?.scrollToPosition(position)
+    }
+
+    companion object{
+        var REFRESH = true
     }
 
 }

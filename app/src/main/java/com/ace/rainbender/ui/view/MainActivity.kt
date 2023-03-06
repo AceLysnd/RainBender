@@ -151,9 +151,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
             val dailyWeather = HourlyWeatherEntity (
                 hourlyId = iHourly+1.toLong(),
                 time = hourly.time!![iHourly]!!,
-                temperature = hourly.temperature2m!![iHourly]!!,
+                temperature = hourly.temperature2m[iHourly]!!,
                 humidity = hourly.relativehumidity2m!![iHourly]!!,
-                weatherCode = hourly.weathercode!![iHourly]!!
+                weatherCode = hourly.weathercode[iHourly]!!
             )
             viewModel.insertHourlyWeather(dailyWeather)
 

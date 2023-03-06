@@ -74,6 +74,10 @@ class LocalRepository @Inject constructor(
         dailyWeatherDataSource.insertWeather(weatherEntity)
     }
 
+    suspend fun updateDailyWeather(weatherEntity: DailyWeatherEntity){
+        dailyWeatherDataSource.updateWeather(weatherEntity)
+    }
+
     suspend fun getAllDaily(): List<DailyWeatherEntity> {
         return dailyWeatherDataSource.getAllDaily()
     }
@@ -84,6 +88,10 @@ class LocalRepository @Inject constructor(
 
     suspend fun insertHourlyWeather(weatherEntity: HourlyWeatherEntity){
         hourlyWeatherDataSource.insertWeather(weatherEntity)
+    }
+
+    suspend fun updateHourlyWeather(weatherEntity: HourlyWeatherEntity){
+        hourlyWeatherDataSource.updateWeather(weatherEntity)
     }
 
     suspend fun getAllHourly(): List<HourlyWeatherEntity> {

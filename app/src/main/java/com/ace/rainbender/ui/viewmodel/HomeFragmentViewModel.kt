@@ -42,6 +42,25 @@ class HomeFragmentViewModel @Inject constructor(
         }
     }
 
+    fun insertDailyWeather(dailyWeatherEntity: DailyWeatherEntity){
+        viewModelScope.launch {
+            localRepository.updateDailyWeather(dailyWeatherEntity)
+        }
+    }
+
+    fun insertHourlyWeather(hourlyWeatherEntity: HourlyWeatherEntity){
+        viewModelScope.launch {
+            localRepository.updateHourlyWeather(hourlyWeatherEntity)
+        }
+    }
+
+    fun deleteDailyWeather() {
+        viewModelScope.launch {
+            localRepository.deleteDailyDatabase()
+            localRepository.deleteHourlyDatabase()
+        }
+    }
+
     fun getDailyWeather(){
         loadingState.postValue(true)
         errorState.postValue(Pair(false, null))
