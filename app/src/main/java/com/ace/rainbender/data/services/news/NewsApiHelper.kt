@@ -1,4 +1,4 @@
-package com.ace.rainbender.data.services
+package com.ace.rainbender.data.services.news
 
 import com.ace.rainbender.data.model.news.NewsResponse
 import retrofit2.Call

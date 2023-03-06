@@ -1,8 +1,7 @@
-package com.ace.rainbender.data.services
+package com.ace.rainbender.data.services.news
 
 import com.ace.rainbender.data.model.news.NewsResponse
-import com.ace.rainbender.data.services.NewsServiceBuilder.BASE_URL
-import com.google.android.gms.common.api.internal.ApiKey
+import com.ace.rainbender.data.services.news.NewsServiceBuilder.BASE_URL
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -22,7 +21,7 @@ interface NewsApiService {
     companion object{
 
         @JvmStatic
-        operator fun invoke() : NewsApiService{
+        operator fun invoke() : NewsApiService {
             val authInterceptor = Interceptor{
                 val originRequest = it.request()
                 val newUrl = originRequest.url.newBuilder().apply {

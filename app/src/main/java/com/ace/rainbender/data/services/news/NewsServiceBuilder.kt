@@ -1,4 +1,4 @@
-package com.ace.rainbender.data.services
+package com.ace.rainbender.data.services.news
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
