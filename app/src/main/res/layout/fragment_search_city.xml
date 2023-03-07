@@ -18,10 +18,33 @@
         android:padding="4dp"
         android:queryHint="Search City or Location" />
 
+    <TextView
+        android:id="@+id/tv_no_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:text="@string/no_result" />
+
     <ListView
         android:id="@+id/lv_locations"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/search_view" />
+        android:layout_below="@id/search_view"
+        tools:listitem="@layout/item_city_search"/>
+
+    <ProgressBar
+        android:id="@+id/pb_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/search_view"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </RelativeLayout>
