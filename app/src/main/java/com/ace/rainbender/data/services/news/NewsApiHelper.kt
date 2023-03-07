@@ -14,8 +14,8 @@ class NewsApiHelper {
                     onResult(null)
                 }
                 override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
-                    val addedUser = response.body()
-                    onResult(addedUser)
+                    val addedWeather = response.body()
+                    onResult(addedWeather)
                 }
             }
         )
