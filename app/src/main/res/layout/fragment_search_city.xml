@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="58dp"
     tools:context=".ui.view.SearchCityFragment">
 
     <SearchView
@@ -29,12 +30,12 @@
         tools:visibility="visible"
         android:text="@string/no_result" />
 
-    <ListView
-        android:id="@+id/lv_locations"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_locations"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/search_view"
-        tools:listitem="@layout/item_city_search"/>
+        tools:listitem="@layout/item_city_search" />
 
     <ProgressBar
         android:id="@+id/pb_post"
