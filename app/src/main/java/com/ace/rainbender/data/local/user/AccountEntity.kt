@@ -3,6 +3,7 @@ package com.ace.rainbender.data.local.user
 import androidx.room.*
 import com.ace.rainbender.data.model.geocoding.Result
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @Entity(tableName = "account_information")
 data class AccountEntity(
@@ -22,7 +23,7 @@ data class AccountEntity(
     var profilePicture: String?,
 
     @ColumnInfo(name = "bookmark")
-    var bookmark: List<Result>?
+    var bookmark: List<Result?>?
 )
 
 class Converters {
@@ -30,5 +31,9 @@ class Converters {
     fun listToJson(value: List<Result>?) = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonToList(value: String) = Gson().fromJson(value, Array<Result>::class.java).toList()
+    fun jsonToList(value: String?): List<Result>? {
+        return if (value != null) {
+            Gson().fromJson(value, object : TypeToken<List<Result>?>() {}.type)
+        } else null
+    }
 }

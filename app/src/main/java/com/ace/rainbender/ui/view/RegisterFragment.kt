@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ace.rainbender.R
 import com.ace.rainbender.data.local.user.AccountEntity
+import com.ace.rainbender.data.model.geocoding.Result
 import com.ace.rainbender.databinding.FragmentRegisterBinding
 import com.ace.rainbender.ui.viewmodel.RegisterFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +54,7 @@ class RegisterFragment : Fragment() {
                 email = binding.etEmail.text.toString(),
                 password = binding.etPassword.text.toString(),
                 profilePicture = null,
-                bookmark = null
+                bookmark = listOf()
             )
             viewModel.registerUser(user)
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
@@ -70,22 +71,22 @@ class RegisterFragment : Fragment() {
         val password = binding.etPassword.text.toString()
         val confirmPassword = binding.etConfirmPassword.text.toString()
 
-        if (firstName.length < 3){
+        if (firstName.length < 3) {
             isValid = false
             binding.etFirstName.error = getString(R.string.too_short)
         }
 
-        if (username.length < 3){
+        if (username.length < 3) {
             isValid = false
             binding.etUsername.error = getString(R.string.too_short)
         }
 
-        if (lastName.length < 3){
+        if (lastName.length < 3) {
             isValid = false
             binding.etLastName.error = getString(R.string.too_short)
         }
 
-        if (password.length < 8){
+        if (password.length < 8) {
             isValid = false
             binding.etPassword.error = getString(R.string.password_too_short)
         }
@@ -126,7 +127,11 @@ class RegisterFragment : Fragment() {
         }
         if (password != confirmPassword) {
             isValid = false
-            Toast.makeText(requireContext(), getString(R.string.password_mismatch), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.password_mismatch),
+                Toast.LENGTH_SHORT
+            ).show()
         }
         return isValid
     }

@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.rainbender.R
@@ -23,6 +24,8 @@ import com.ace.rainbender.data.services.geocode.GeocodeApiHelper
 import com.ace.rainbender.databinding.FragmentSearchCityBinding
 import com.ace.rainbender.ui.adapter.CityResultAdapter
 import com.ace.rainbender.ui.adapter.NewsAdapter
+import com.ace.rainbender.ui.viewmodel.BookmarksViewModel
+import com.ace.rainbender.ui.viewmodel.LoginFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.Result as Result1
 
@@ -30,6 +33,8 @@ import kotlin.Result as Result1
 class SearchCityFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchCityBinding
+
+    private val viewModel: BookmarksViewModel by viewModels()
 
     lateinit var rvLocation: RecyclerView
 
@@ -97,6 +102,14 @@ class SearchCityFragment : Fragment() {
     }
 
     private fun onResultClick(result: Result) {
+        var accountId: Long = 0
+        viewModel.getAccount().observe(viewLifecycleOwner) {
+            accountId = it.accountId
+        }
+        var listResult = listOf(result)
+
+        viewModel.updateBookmark(accountId, listResult)
+
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host, BookmarkFragment())
         transaction.disallowAddToBackStack()

@@ -8,6 +8,8 @@ import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDao
 import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDatabase
 import com.ace.rainbender.data.local.user.AccountDao
 import com.ace.rainbender.data.local.user.AccountDatabase
+import com.ace.rainbender.data.local.user.MIGRATION_1_2
+import com.ace.rainbender.data.local.user.MIGRATION_2_3
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,7 +43,12 @@ class DatabaseModule {
             appContext,
             AccountDatabase::class.java,
             "app_database"
-        ).build()
+        )
+            .addMigrations(
+                MIGRATION_1_2,
+                MIGRATION_2_3
+            )
+            .build()
     }
 
     @Provides
