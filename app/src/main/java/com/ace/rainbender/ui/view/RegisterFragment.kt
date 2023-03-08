@@ -51,7 +51,9 @@ class RegisterFragment : Fragment() {
             val user = AccountEntity(
                 username = binding.etUsername.text.toString(),
                 email = binding.etEmail.text.toString(),
-                password = binding.etPassword.text.toString()
+                password = binding.etPassword.text.toString(),
+                profilePicture = null,
+                bookmark = null
             )
             viewModel.registerUser(user)
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)

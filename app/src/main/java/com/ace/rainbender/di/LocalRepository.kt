@@ -12,6 +12,7 @@ import com.ace.rainbender.data.model.AccountDataStoreManager
 import com.ace.rainbender.data.model.Location
 import com.ace.rainbender.data.model.LocationDataStoreManager
 import com.ace.rainbender.data.model.Prefs
+import com.ace.rainbender.data.model.geocoding.Result
 import javax.inject.Inject
 
 class LocalRepository @Inject constructor(
@@ -36,6 +37,14 @@ class LocalRepository @Inject constructor(
 
     suspend fun getAccount(username: String): AccountEntity {
         return accountDataSource.getUser(username)
+    }
+
+    suspend fun updateProfilePic(id: Long, profilePicture: String): Int {
+        return accountDataSource.updateProfilePicture(id, profilePicture)
+    }
+
+    suspend fun updateBookmark(id: Long, bookmark: List<Result>) : Int {
+        return accountDataSource.updateBookmark(id, bookmark)
     }
 
     suspend fun setAccount(username: String, email: String, password:String, accountId: Long) {

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.ace.rainbender.data.model.geocoding.Result
 
 @Dao
 interface AccountDao {
@@ -22,4 +23,10 @@ interface AccountDao {
 
     @Query("SELECT * FROM ACCOUNT_INFORMATION")
     suspend fun getAllAccount() : List<AccountEntity>
+
+    @Query("UPDATE ACCOUNT_INFORMATION SET profilePicture = :profilePicture WHERE accountId = :accountId " )
+    suspend fun updateProfilePic(accountId: Long, profilePicture: String) : Int
+
+    @Query("UPDATE ACCOUNT_INFORMATION SET bookmark = :bookmark WHERE accountId = :accountId " )
+    suspend fun updateBookmark(accountId: Long, bookmark: List<Result>) : Int
 }

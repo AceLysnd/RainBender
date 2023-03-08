@@ -35,8 +35,6 @@ class SearchCityFragment : Fragment() {
 
     lateinit var listAdapter: CityResultAdapter
 
-//    lateinit var responseList: GeocodeResponse
-
     lateinit var searchView: SearchView
 
     override fun onCreateView(
@@ -61,16 +59,6 @@ class SearchCityFragment : Fragment() {
         setLayout()
         setAdapter()
 
-//        responseList = ArrayList()
-//        responseList.add("Depok")
-
-//        listAdapter = ArrayAdapter<String>(
-//            requireActivity(),
-//            android.R.layout.simple_list_item_1,
-//            responseList
-//        )
-
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.pbPost.isVisible = true
@@ -90,26 +78,13 @@ class SearchCityFragment : Fragment() {
                                 binding.pbPost.isVisible = false
                             }, 1500)
 
-//                            listAdapter = ArrayAdapter<String>(
-//                                requireActivity(),
-//                                android.R.layout.simple_list_item_1,
-//                                responseList
-//                            )
-
-//                            lvLocation.adapter = listAdapter
                         }
                     }
                 }
-//
-//                if (responseList.contains(query)) {
-//                    listAdapter.filter.filter(query)
-//                }
                 return false
             }
 
             override fun onQueryTextChange(newQuery: String?): Boolean {
-
-//                listAdapter.filter.filter(newQuery)
 
                 return false
             }
@@ -122,6 +97,10 @@ class SearchCityFragment : Fragment() {
     }
 
     private fun onResultClick(result: Result) {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host, BookmarkFragment())
+        transaction.disallowAddToBackStack()
+        transaction.commit()
 
     }
 
@@ -132,13 +111,4 @@ class SearchCityFragment : Fragment() {
             false
         )
     }
-
-//    private fun addResponseList(results: List<Result?>) {
-//        if (i < results.size) {
-//            responseList.add(results[i]!!.name!!)
-//            Log.d("query response added ", results[i]!!.name.toString())
-//            i +=1
-//            addResponseList(results)
-//        }
-//    }
 }
