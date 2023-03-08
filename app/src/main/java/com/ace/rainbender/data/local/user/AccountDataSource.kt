@@ -1,5 +1,8 @@
 package com.ace.rainbender.data.local.user
 
+import android.graphics.Picture
+import com.ace.rainbender.data.model.geocoding.Result
+import com.ace.rainbender.ui.view.BookmarkFragment
 import javax.inject.Inject
 
 class AccountDataSource @Inject constructor(private val accountDao: AccountDao) {
@@ -20,4 +23,11 @@ class AccountDataSource @Inject constructor(private val accountDao: AccountDao) 
         return accountDao.getUser(username)
     }
 
+    suspend fun updateProfilePicture(id: Long, profilePicture: String) : Int {
+        return accountDao.updateProfilePic(id, profilePicture)
+    }
+
+    suspend fun updateBookmark(id: Long, bookmark: List<Result>) : Int {
+        return accountDao.updateBookmark(id, bookmark)
+    }
 }
