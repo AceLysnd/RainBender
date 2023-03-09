@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_homeFragment_to_bookmarkFragment"
             app:destination="@id/bookmarkFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashScreenFragment"
@@ -74,4 +77,9 @@
         android:name="com.ace.rainbender.ui.view.SearchCityFragment"
         android:label="fragment_search_city"
         tools:layout="@layout/fragment_search_city" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ace.rainbender.ui.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
