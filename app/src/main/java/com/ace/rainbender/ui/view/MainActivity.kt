@@ -7,6 +7,8 @@ import android.location.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -16,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ace.rainbender.R
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
@@ -106,6 +109,30 @@ class MainActivity : AppCompatActivity(), LocationListener {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocation()
         getWeatherForecast()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_profile, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return when (item.itemId){
+            R.id.profile -> {
+                goToProfile()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun goToProfile() {
+//        findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+        loadFragment(ProfileFragment())
+        supportActionBar!!.hide()
+        onBackPressed = 1
+        binding.botnav.visibility = View.GONE
     }
 
     private fun getWeatherForecast() {
@@ -217,9 +244,20 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     }
 
-
+    var onBackPressed = 0
     override fun onBackPressed() {
-//        super.onBackPressed()
+        var currentFragment = supportFragmentManager.fragments.last()
+
+        if (onBackPressed == 1){
+//            super.onBackPressed()
+            loadFragment(HomeFragment())
+            supportActionBar!!.show()
+            binding.botnav.visibility = View.VISIBLE
+        } else if (currentFragment == LoginFragment()){
+
+        } else {
+
+        }
     }
 
     companion object {
