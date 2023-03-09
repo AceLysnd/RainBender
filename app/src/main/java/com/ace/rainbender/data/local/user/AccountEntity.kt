@@ -23,7 +23,7 @@ data class AccountEntity(
     var profilePicture: String?,
 
     @ColumnInfo(name = "bookmark")
-    var bookmark: List<Result?>?
+    var bookmark: List<Result>?
 )
 
 class Converters {

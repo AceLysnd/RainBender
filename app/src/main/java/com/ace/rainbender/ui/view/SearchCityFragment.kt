@@ -1,5 +1,6 @@
 package com.ace.rainbender.ui.view
 
+import android.accounts.Account
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,6 +19,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.rainbender.R
+import com.ace.rainbender.data.local.user.AccountEntity
 import com.ace.rainbender.data.model.geocoding.GeocodeResponse
 import com.ace.rainbender.data.model.geocoding.Result
 import com.ace.rainbender.data.services.geocode.GeocodeApiHelper
@@ -103,12 +105,31 @@ class SearchCityFragment : Fragment() {
 
     private fun onResultClick(result: Result) {
         var accountId: Long = 0
+        var listResult: MutableList<Result> = mutableListOf()
+        var accountEntity: AccountEntity
         viewModel.getAccount().observe(viewLifecycleOwner) {
             accountId = it.accountId
-        }
-        var listResult = listOf(result)
+//            viewModel.updateBookmark(accountId, listOf(result))
+            viewModel.getUser(it.username)
+            viewModel.getUser.observe(viewLifecycleOwner){ entity ->
+                accountEntity = entity
+                if (accountEntity.bookmark!!.isEmpty()) {
+                    viewModel.updateBookmark(accountId, listOf(result))
+                } else  {
+                    var size = accountEntity.bookmark!!.size
+                    val index = size + 1
+                    listResult = accountEntity.bookmark!!.toMutableList()
+                    listResult.add(index,result)
+                    Log.d("bookmarked", listResult.size.toString())
+                    viewModel.updateBookmark(accountId, listResult)
+                }
+            }
 
-        viewModel.updateBookmark(accountId, listResult)
+//            Log.d("bookmarked", listResult.size.toString())
+        }
+
+
+        Log.d("acc id", accountId.toString())
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.nav_host, BookmarkFragment())
