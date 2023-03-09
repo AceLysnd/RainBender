@@ -15,12 +15,11 @@ import kotlin.math.log
 @HiltViewModel
 class ProfileViewModel @Inject constructor(private val repository: LocalRepository) : ViewModel() {
 
-    val detailDataResult = MutableLiveData<AccountEntity>()
-    val updateResult = MutableLiveData<Resource<Number>>()
+    val profileData = MutableLiveData<AccountEntity>()
 
     fun getAccountById(id: Long) {
         viewModelScope.launch {
-            detailDataResult.postValue(repository.getAccountById(id))
+            profileData.postValue(repository.getAccountById(id))
         }
     }
 
