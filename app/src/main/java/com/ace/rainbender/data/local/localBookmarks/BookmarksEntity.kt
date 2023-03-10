@@ -1,27 +1,14 @@
-package com.ace.rainbender.data.local.user
+package com.ace.rainbender.data.local.localBookmarks
 
 import androidx.room.*
 import com.ace.rainbender.data.model.geocoding.Result
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-@Entity(tableName = "account_information")
-data class AccountEntity(
+@Entity(tableName = "bookmarks")
+data class BookmarksEntity(
     @PrimaryKey(autoGenerate = true)
     var accountId: Long = 0,
-
-    @ColumnInfo(name = "username")
-    var username: String,
-
-    @ColumnInfo(name = "email")
-    var email: String,
-
-    @ColumnInfo(name = "password")
-    var password: String,
-
-    @ColumnInfo(name = "profilePicture")
-    var profilePicture: String?,
-
     @ColumnInfo(name = "bookmark")
     var bookmark: MutableList<Result>?
 )

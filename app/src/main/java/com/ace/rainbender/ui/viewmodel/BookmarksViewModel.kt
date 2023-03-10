@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ace.rainbender.data.local.localBookmarks.BookmarksEntity
 import com.ace.rainbender.data.local.user.AccountEntity
 import com.ace.rainbender.data.model.Prefs
 import com.ace.rainbender.data.model.geocoding.Result
@@ -28,10 +29,22 @@ class BookmarksViewModel @Inject constructor(private val repository: LocalReposi
         return repository.getAccountPrefs()
     }
 
-    fun updateBookmark(accountId: Long, bookmark: List<Result>) {
+    fun updateBookmark(accountId: Long, bookmark: MutableList<Result>) {
         viewModelScope.launch {
             repository.updateBookmark(accountId, bookmark)
         }
+    }
+
+    fun insertBookmarks(bookmarksEntity: BookmarksEntity){
+        repository.insertBookmarks(bookmarksEntity)
+    }
+
+    fun editBookmarks(bookmarksEntity: BookmarksEntity){
+        repository.updateBookmarks(bookmarksEntity)
+    }
+
+    fun getBookmarks(): BookmarksEntity? {
+        return repository.getBookmarks()
     }
 
 }
