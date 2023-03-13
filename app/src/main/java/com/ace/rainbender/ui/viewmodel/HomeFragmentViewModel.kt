@@ -42,6 +42,12 @@ class HomeFragmentViewModel @Inject constructor(
         }
     }
 
+    fun getForecastFromLoc(latitude: Double, longitude: Double){
+        viewModelScope.launch {
+            _weatherForecast.postValue(weatherRepository.getForecastFromLoc(latitude, longitude))
+        }
+    }
+
     fun insertDailyWeather(dailyWeatherEntity: DailyWeatherEntity){
         viewModelScope.launch {
             localRepository.updateDailyWeather(dailyWeatherEntity)
