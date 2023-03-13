@@ -10,10 +10,18 @@ class BookmarksDataSource @Inject constructor(private val bookmarksDao: Bookmark
     }
 
     fun updateBookmarks(bookmarksEntity: BookmarksEntity):Int {
-        return bookmarksDao.updateAccount(bookmarksEntity)
+        return bookmarksDao.updateBookmark(bookmarksEntity)
+    }
+
+    fun deleteBookmarks(bookmarksEntity: BookmarksEntity): Int{
+        return bookmarksDao.deleteAllBookmarks(bookmarksEntity)
     }
 
     fun getBookmarks(): BookmarksEntity? {
         return bookmarksDao.getAllBookmarks()
+    }
+
+    fun getBookmarksById(accountId: Long): BookmarksEntity? {
+        return bookmarksDao.getBookmarksById(accountId)
     }
 }

@@ -104,7 +104,7 @@ class SearchCityFragment : Fragment() {
             accountId = it.accountId
             viewModel.getUser(it.username)
         }
-        if (viewModel.getBookmarks()?.bookmark == null) {
+        if (viewModel.getBookmarksById(accountId)?.bookmark == null) {
             listResult.add(result)
             val bookmarksEntity = BookmarksEntity(
                 accountId = accountId,
@@ -112,7 +112,7 @@ class SearchCityFragment : Fragment() {
             )
             viewModel.insertBookmarks(bookmarksEntity)
         } else {
-            listResult = viewModel.getBookmarks()!!.bookmark!!
+            listResult = viewModel.getBookmarksById(accountId)!!.bookmark!!
             Log.d("ressize", listResult.toString())
             listResult.add(result)
             Log.d("ressize after", listResult.toString())

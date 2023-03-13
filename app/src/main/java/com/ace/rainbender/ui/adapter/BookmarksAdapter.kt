@@ -13,7 +13,7 @@ import com.ace.rainbender.databinding.ItemCitySearchBinding
 
 class BookmarksAdapter (
     private var items: MutableList<Result>,
-    private val onResultClick: (result: Result) -> Unit
+    private val listener:BookmarkItemListener
 ) :
     RecyclerView.Adapter<BookmarksAdapter.PostViewHolder>() {
 
@@ -91,19 +91,22 @@ class BookmarksAdapter (
                     }
 
                 }
-//                tvDetails.text = item.admin1 + ", " + item.country
-//
-//                val firstLetter = Character.codePointAt(item.countryCode, 0) - 0x41 + 0x1F1E6
-//                val secondLetter = Character.codePointAt(item.countryCode, 1) - 0x41 + 0x1F1E6
-//                val countryFlag =
-//                    String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
-//
-//                tvFlag.text = countryFlag
                 tvDetails.text = item.admin1 + ", " + item.country
+
+                ivDelete.setOnClickListener{
+                    listener.onDeleteMenuClicker(item)
+                }
             }
 
-            itemView.setOnClickListener { onResultClick.invoke(item) }
+            itemView.setOnClickListener {
+                listener.onItemClicked(item, item.id!!)
+            }
 
         }
     }
+}
+
+interface BookmarkItemListener {
+    fun onItemClicked(item: Result, position: Int)
+    fun onDeleteMenuClicker(item: Result)
 }
