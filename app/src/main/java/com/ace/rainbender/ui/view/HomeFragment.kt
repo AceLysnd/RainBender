@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.ace.rainbender.R
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
 import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
@@ -23,13 +26,16 @@ import com.ace.rainbender.data.model.weather.WeatherResponse
 import com.ace.rainbender.databinding.FragmentHomeBinding
 import com.ace.rainbender.ui.adapter.DailyWeatherAdapter
 import com.ace.rainbender.ui.adapter.HourlyWeatherAdapter
+import com.ace.rainbender.ui.adapter.TabAdapter
 import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_LOCATION
 import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_TEMPERATURE
 import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_TIME
 import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_TIMEZONE
 import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_WEATHERCODE
 import com.ace.rainbender.ui.viewmodel.HomeFragmentViewModel
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_home.*
 import java.time.LocalDateTime
 import java.util.*
 
@@ -38,6 +44,9 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeFragmentViewModel by viewModels()
+
+    var tabLayout: TabLayout? = null
+    var viewPager: ViewPager2? = null
 
     private lateinit var hourlyWeatherRv: RecyclerView
     private lateinit var dailyWeatherRv: RecyclerView
@@ -72,8 +81,14 @@ class HomeFragment : Fragment() {
             REFRESH = false
         }
 
+        tabLayout = binding.tabLayout
+        viewPager = binding.viewPager
+
+        setTabLayout()
+
+
         hourlyWeatherRv = binding.rvHourlyForecast
-        dailyWeatherRv = view.findViewById(R.id.rv_daily_forecast)
+        dailyWeatherRv = binding.rvDailyForecast
 
         setLayouts()
         setWeatherAdapters()
@@ -85,6 +100,27 @@ class HomeFragment : Fragment() {
         binding.tvTimezone.text = CURRENT_TIMEZONE
         binding.tvTemperature.text = CURRENT_TEMPERATURE + "°C"
 
+    }
+
+    private fun setTabLayout() {
+        tabLayout!!.addTab(tabLayout!!.newTab().setText("Today"))
+        tabLayout!!.addTab(tabLayout!!.newTab().setText("Tomorrow"))
+        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
+
+        val tabAdapter = TabAdapter((activity as AppCompatActivity).supportFragmentManager, tabLayout!!.tabCount, lifecycle)
+        viewPager!!.adapter = tabAdapter
+
+        tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager!!.currentItem = tab.position
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+
+            }
+            override fun onTabReselected(tab: TabLayout.Tab) {
+
+            }
+        })
     }
 
     private fun loadWeatherIcon() {
