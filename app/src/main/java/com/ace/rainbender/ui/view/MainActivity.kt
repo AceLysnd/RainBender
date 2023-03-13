@@ -272,6 +272,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         var CURRENT_WEATHERCODE = 0
 
         var TEST_TEMP = ""
+        var HOME = true
     }
 
     override fun onDestroy() {

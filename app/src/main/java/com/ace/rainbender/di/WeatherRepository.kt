@@ -6,4 +6,5 @@ import com.ace.rainbender.ui.view.MainActivity.Companion.LONGITUDE
 
 class WeatherRepository(private val weatherApiHelper: WeatherApiHelper) {
     suspend fun getWeatherForecast() = weatherApiHelper.getWeatherForecast(latitude = LATITUDE, longitude = LONGITUDE)
+    suspend fun getForecastFromLoc(latitude: Double, longitude: Double) = weatherApiHelper.getWeatherForecast(latitude, longitude)
 }

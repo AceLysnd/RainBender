@@ -3,20 +3,18 @@ package com.ace.rainbender.ui.view
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.ace.rainbender.R
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
@@ -24,26 +22,26 @@ import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
 import com.ace.rainbender.data.model.weather.Daily
 import com.ace.rainbender.data.model.weather.Hourly
 import com.ace.rainbender.data.model.weather.WeatherResponse
+import com.ace.rainbender.databinding.FragmentBookmarksDetailBinding
 import com.ace.rainbender.databinding.FragmentHomeBinding
 import com.ace.rainbender.ui.adapter.DailyWeatherAdapter
 import com.ace.rainbender.ui.adapter.HourlyWeatherAdapter
 import com.ace.rainbender.ui.adapter.TabAdapter
-import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_LOCATION
-import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_TEMPERATURE
-import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_TIME
-import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_TIMEZONE
-import com.ace.rainbender.ui.view.MainActivity.Companion.CURRENT_WEATHERCODE
+import com.ace.rainbender.ui.view.BookmarkFragment.Companion.RES_ADMIN1
+import com.ace.rainbender.ui.view.BookmarkFragment.Companion.RES_COUNTRY
+import com.ace.rainbender.ui.view.BookmarkFragment.Companion.RES_LAT
+import com.ace.rainbender.ui.view.BookmarkFragment.Companion.RES_LOCATION
+import com.ace.rainbender.ui.view.BookmarkFragment.Companion.RES_LONG
 import com.ace.rainbender.ui.view.MainActivity.Companion.HOME
 import com.ace.rainbender.ui.viewmodel.HomeFragmentViewModel
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_home.*
 import java.time.LocalDateTime
 import java.util.*
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
+class BookmarksDetail : Fragment() {
+    private lateinit var binding: FragmentBookmarksDetailBinding
 
     private val viewModel: HomeFragmentViewModel by viewModels()
 
@@ -64,12 +62,12 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        CURRENT_TIME = LocalDateTime.now().toString()
-        CURRENT_TIMEZONE = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
-        Log.d("Timezone", CURRENT_TIMEZONE)
+        MainActivity.CURRENT_TIME = LocalDateTime.now().toString()
+        MainActivity.CURRENT_TIMEZONE = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
+        Log.d("Timezone", MainActivity.CURRENT_TIMEZONE)
 
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        binding = FragmentBookmarksDetailBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -78,8 +76,7 @@ class HomeFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        HOME = true
-
+        HOME = false
         tabLayout = binding.tabLayout
         viewPager = binding.viewPager
 
@@ -94,11 +91,21 @@ class HomeFragment : Fragment() {
         getWeatherForecast()
         loadWeatherIcon()
 
-        binding.tvLocation.text = CURRENT_LOCATION
-        binding.tvTime.text = CURRENT_TIME.subSequence(11,16)
-        binding.tvTimezone.text = CURRENT_TIMEZONE
-        binding.tvTemperature.text = CURRENT_TEMPERATURE + "°C"
+        binding.tvLocation.text = RES_LOCATION
+        binding.tvLocationDetails.text =  RES_ADMIN1 + ", " + RES_COUNTRY
+        binding.tvTemperature.text = MainActivity.CURRENT_TEMPERATURE + "°C"
 
+        setOnclickListeners()
+
+    }
+
+    private fun setOnclickListeners() {
+        binding.btnRefresh.setOnClickListener{
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host, BookmarksDetail())
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
     }
 
     private fun setTabLayout() {
@@ -123,7 +130,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadWeatherIcon() {
-        val weatherCode = CURRENT_WEATHERCODE
+        val weatherCode = MainActivity.CURRENT_WEATHERCODE
 
         with(binding) {
             if (weatherCode == 0) {
@@ -165,11 +172,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setLayouts() {
-        hourlyWeatherRv.layoutManager = LinearLayoutManager(
-                requireContext(),
-        LinearLayoutManager.HORIZONTAL,
-        false
-        )
         dailyWeatherRv.layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.VERTICAL,
@@ -178,18 +180,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setWeatherAdapters() {
-        hourlyWeatherAdapter = HourlyWeatherAdapter(mutableListOf())
-        hourlyWeatherRv.adapter = hourlyWeatherAdapter
-
         dailyWeatherAdapter = DailyWeatherAdapter(mutableListOf())
         dailyWeatherRv.adapter = dailyWeatherAdapter
-
     }
 
     private fun getWeatherForecast() {
-        viewModel.getWeatherForecast()
+        viewModel.getForecastFromLoc(RES_LAT, RES_LONG)
         viewModel.getDailyWeather()
-        viewModel.getHourlyWeather()
 
         viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
             binding.pbPost.isVisible = isLoading
@@ -206,15 +203,11 @@ class HomeFragment : Fragment() {
 
         viewModel.weatherForecast.observe(viewLifecycleOwner){
             loadHomeWeather(it)
-            loadHourlyWeather(it.hourly!!)
             loadDailyWeather(it.daily!!)
         }
 
         viewModel.dailyForecast.observe(viewLifecycleOwner){
             fetchDailyWeather(it)
-        }
-        viewModel.hourlyForecast.observe(viewLifecycleOwner){
-            fetchHourlyWeather(it)
         }
     }
 
@@ -236,49 +229,19 @@ class HomeFragment : Fragment() {
             Log.d("daitemp",daily.temperature2mMin[5].toString())
             Log.d("daitemp",daily.temperature2mMin[6].toString())
         }
-
-    }
-
-    private var iHourly = 0
-    private fun loadHourlyWeather(hourly: Hourly) {
-        if (iHourly < 49) {
-            val dailyWeather = HourlyWeatherEntity (
-                hourlyId = iHourly+1.toLong(),
-                time = hourly.time!![iHourly]!!,
-                temperature = hourly.temperature2m!![iHourly]!!,
-                humidity = hourly.relativehumidity2m!![iHourly]!!,
-                weatherCode = hourly.weathercode!![iHourly]!!
-            )
-            viewModel.insertHourlyWeather(dailyWeather)
-
-            iHourly += 1
-            loadHourlyWeather(hourly)
-            Log.d("daitemp",hourly.temperature2m[0].toString())
-
-        }
     }
 
     private fun loadHomeWeather(it: WeatherResponse?) {
         MainActivity.TEST_TEMP = it?.hourly?.temperature2m!![1].toString().substring(0, 2)
-        var time = CURRENT_TIME.subSequence(11, 13)
+        var time = MainActivity.CURRENT_TIME.subSequence(11, 13)
         Log.d("time", time.toString())
         var currentTime = 0 + Integer.parseInt(time.toString())
-        CURRENT_TEMPERATURE = it.hourly.temperature2m[currentTime].toString().substring(0, 2)
-        CURRENT_WEATHERCODE = it.hourly.weathercode!![currentTime]!!
+        MainActivity.CURRENT_TEMPERATURE = it.hourly.temperature2m[currentTime].toString().substring(0, 2)
+        MainActivity.CURRENT_WEATHERCODE = it.hourly.weathercode!![currentTime]!!
     }
-
-
-
 
     private fun fetchDailyWeather(daily: List<DailyWeatherEntity>) {
         dailyWeatherAdapter.addData(daily)
-    }
-
-    private fun fetchHourlyWeather(hourly: List<HourlyWeatherEntity>) {
-
-        hourlyWeatherAdapter.addData(hourly)
-        val position = Integer.parseInt(CURRENT_TIME.subSequence(11,13).toString())
-        hourlyWeatherRv.layoutManager?.scrollToPosition(position)
     }
 
     companion object{

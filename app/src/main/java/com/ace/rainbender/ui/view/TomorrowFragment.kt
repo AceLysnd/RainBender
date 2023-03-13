@@ -47,7 +47,11 @@ class TomorrowFragment : Fragment() {
     }
 
     private fun getWeatherForecast() {
-        viewModel.getWeatherForecast()
+        if (!MainActivity.HOME) {
+            viewModel.getForecastFromLoc(BookmarkFragment.RES_LAT, BookmarkFragment.RES_LONG)
+        } else {
+            viewModel.getDailyWeather()
+        }
         viewModel.getHourlyWeather()
 
         viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->

@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_bookmarkFragment_to_searchCityFragment"
             app:destination="@id/searchCityFragment" />
+        <action
+            android:id="@+id/action_bookmarkFragment_to_bookmarksDetail"
+            app:destination="@id/bookmarksDetail" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -86,4 +89,9 @@
             android:id="@+id/action_profileFragment_self"
             app:destination="@id/profileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/bookmarksDetail"
+        android:name="com.ace.rainbender.ui.view.BookmarksDetail"
+        android:label="fragment_bookmarks_detail"
+        tools:layout="@layout/fragment_bookmarks_detail" />
 </navigation>

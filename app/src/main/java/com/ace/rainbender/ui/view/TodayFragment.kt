@@ -14,6 +14,9 @@ import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherEntity
 import com.ace.rainbender.data.model.weather.Hourly
 import com.ace.rainbender.databinding.FragmentTodayBinding
 import com.ace.rainbender.ui.adapter.HourlyWeatherAdapter
+import com.ace.rainbender.ui.view.BookmarkFragment.Companion.RES_LAT
+import com.ace.rainbender.ui.view.BookmarkFragment.Companion.RES_LONG
+import com.ace.rainbender.ui.view.MainActivity.Companion.HOME
 import com.ace.rainbender.ui.viewmodel.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +48,11 @@ class TodayFragment : Fragment() {
     }
 
     private fun getWeatherForecast() {
-        viewModel.getWeatherForecast()
+        if (!HOME) {
+            viewModel.getForecastFromLoc(RES_LAT, RES_LONG)
+        } else {
+            viewModel.getDailyWeather()
+        }
         viewModel.getHourlyWeather()
 
         viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->

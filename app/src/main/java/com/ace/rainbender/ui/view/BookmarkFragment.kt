@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.rainbender.R
@@ -89,6 +90,21 @@ class BookmarkFragment : Fragment() {
     }
 
     private fun onResultClick(result: Result) {
-
+        RES_LAT = result.latitude!!
+        RES_LONG = result.longitude!!
+        RES_LOCATION = result.name!!
+        RES_ADMIN1 = result.admin1!!
+        RES_COUNTRY = result.country!!
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host, BookmarksDetail())
+        transaction.disallowAddToBackStack()
+        transaction.commit()
+    }
+    companion object {
+        var RES_LAT = 0.0
+        var RES_LONG = 0.0
+        var RES_LOCATION = ""
+        var RES_ADMIN1 = ""
+        var RES_COUNTRY = ""
     }
 }
