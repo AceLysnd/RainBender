@@ -27,7 +27,7 @@ class AccountDataSource @Inject constructor(private val accountDao: AccountDao) 
         return accountDao.updateProfilePic(id, profilePicture)
     }
 
-    suspend fun updateBookmark(id: Long, bookmark: List<Result>) : Int {
+    suspend fun updateBookmark(id: Long, bookmark: MutableList<Result>) : Int {
         return accountDao.updateBookmark(id, bookmark)
     }
 }

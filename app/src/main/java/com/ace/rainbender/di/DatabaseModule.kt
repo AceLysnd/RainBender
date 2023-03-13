@@ -2,6 +2,8 @@ package com.ace.rainbender.di
 
 import android.content.Context
 import androidx.room.Room
+import com.ace.rainbender.data.local.localBookmarks.BookmarksDao
+import com.ace.rainbender.data.local.localBookmarks.BookmarksDatabase
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDao
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDatabase
 import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDao
@@ -33,6 +35,11 @@ class DatabaseModule {
     @Provides
     fun provideHourlyDao(hourlyWeatherDatabase: HourlyWeatherDatabase): HourlyWeatherDao {
         return hourlyWeatherDatabase.hourlyWeatherDao
+    }
+
+    @Provides
+    fun provideBookmarksDao(bookmarksDatabase: BookmarksDatabase): BookmarksDao {
+        return bookmarksDatabase.bookmarksDao
     }
 
     @Provides
@@ -71,5 +78,16 @@ class DatabaseModule {
             HourlyWeatherDatabase::class.java,
             "hourly_weather_database"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookmarksDatabase(@ApplicationContext appContext: Context):
+            BookmarksDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            BookmarksDatabase::class.java,
+            "bookmarks_database"
+        ).allowMainThreadQueries().build()
     }
 }

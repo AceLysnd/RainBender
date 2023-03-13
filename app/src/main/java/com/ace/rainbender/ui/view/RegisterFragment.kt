@@ -54,7 +54,7 @@ class RegisterFragment : Fragment() {
                 email = binding.etEmail.text.toString(),
                 password = binding.etPassword.text.toString(),
                 profilePicture = null,
-                bookmark = listOf()
+                bookmark = mutableListOf()
             )
             viewModel.registerUser(user)
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)

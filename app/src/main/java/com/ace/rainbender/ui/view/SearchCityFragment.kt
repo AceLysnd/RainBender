@@ -1,6 +1,5 @@
 package com.ace.rainbender.ui.view
 
-import android.accounts.Account
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,28 +7,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.rainbender.R
+import com.ace.rainbender.data.local.localBookmarks.BookmarksEntity
 import com.ace.rainbender.data.local.user.AccountEntity
-import com.ace.rainbender.data.model.geocoding.GeocodeResponse
 import com.ace.rainbender.data.model.geocoding.Result
 import com.ace.rainbender.data.services.geocode.GeocodeApiHelper
 import com.ace.rainbender.databinding.FragmentSearchCityBinding
 import com.ace.rainbender.ui.adapter.CityResultAdapter
-import com.ace.rainbender.ui.adapter.NewsAdapter
 import com.ace.rainbender.ui.viewmodel.BookmarksViewModel
-import com.ace.rainbender.ui.viewmodel.LoginFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.Result as Result1
 
 @AndroidEntryPoint
 class SearchCityFragment : Fragment() {
@@ -37,6 +29,8 @@ class SearchCityFragment : Fragment() {
     private lateinit var binding: FragmentSearchCityBinding
 
     private val viewModel: BookmarksViewModel by viewModels()
+
+    private val viewModel2: BookmarksViewModel by viewModels()
 
     lateinit var rvLocation: RecyclerView
 
@@ -99,35 +93,37 @@ class SearchCityFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        listAdapter = CityResultAdapter(mutableListOf()) {result -> onResultClick(result) }
+        listAdapter = CityResultAdapter(mutableListOf()) { result -> onResultClick(result) }
         rvLocation.adapter = listAdapter
     }
 
     private fun onResultClick(result: Result) {
         var accountId: Long = 0
         var listResult: MutableList<Result> = mutableListOf()
-        var accountEntity: AccountEntity
         viewModel.getAccount().observe(viewLifecycleOwner) {
             accountId = it.accountId
-//            viewModel.updateBookmark(accountId, listOf(result))
             viewModel.getUser(it.username)
-            viewModel.getUser.observe(viewLifecycleOwner){ entity ->
-                accountEntity = entity
-                if (accountEntity.bookmark!!.isEmpty()) {
-                    viewModel.updateBookmark(accountId, listOf(result))
-                } else  {
-                    var size = accountEntity.bookmark!!.size
-                    val index = size + 1
-                    listResult = accountEntity.bookmark!!.toMutableList()
-                    listResult.add(index,result)
-                    Log.d("bookmarked", listResult.size.toString())
-                    viewModel.updateBookmark(accountId, listResult)
-                }
-            }
-
-//            Log.d("bookmarked", listResult.size.toString())
+        }
+        if (viewModel.getBookmarks()?.bookmark == null) {
+            listResult.add(result)
+            val bookmarksEntity = BookmarksEntity(
+                accountId = accountId,
+                bookmark = listResult
+            )
+            viewModel.insertBookmarks(bookmarksEntity)
+        } else {
+            listResult = viewModel.getBookmarks()!!.bookmark!!
+            Log.d("ressize", listResult.toString())
+            listResult.add(result)
+            Log.d("ressize after", listResult.toString())
+            val bookmarksEntity = BookmarksEntity(
+                accountId = accountId,
+                bookmark = listResult
+            )
+            viewModel.editBookmarks(bookmarksEntity)
         }
 
+        viewModel.updateBookmark(accountId, listResult)
 
         Log.d("acc id", accountId.toString())
 

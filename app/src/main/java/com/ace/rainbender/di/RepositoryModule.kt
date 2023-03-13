@@ -1,6 +1,7 @@
 package com.ace.rainbender.di
 
 import android.content.Context
+import com.ace.rainbender.data.local.localBookmarks.BookmarksDataSource
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDataSource
 import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDataSource
 import com.ace.rainbender.data.local.user.AccountDataSource
@@ -28,8 +29,9 @@ object RepositoryModule {
                           prefs: AccountDataStoreManager,
                           weatherDataSource: DailyWeatherDataSource,
                           weatherDataSource2: HourlyWeatherDataSource,
+                          bookmarksDataSource: BookmarksDataSource,
                           locationPrefs: LocationDataStoreManager) =
-        LocalRepository(accountDataSource, prefs, weatherDataSource,weatherDataSource2, locationPrefs)
+        LocalRepository(accountDataSource, prefs, weatherDataSource,weatherDataSource2,bookmarksDataSource, locationPrefs)
 
 
     @ViewModelScoped

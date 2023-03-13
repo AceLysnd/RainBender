@@ -2,6 +2,9 @@ package com.ace.rainbender.di
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import com.ace.rainbender.data.local.localBookmarks.BookmarksDataSource
+import com.ace.rainbender.data.local.localBookmarks.BookmarksDatabase
+import com.ace.rainbender.data.local.localBookmarks.BookmarksEntity
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherDataSource
 import com.ace.rainbender.data.local.localweather.daily.DailyWeatherEntity
 import com.ace.rainbender.data.local.localweather.hourly.HourlyWeatherDataSource
@@ -20,6 +23,7 @@ class LocalRepository @Inject constructor(
     private val prefs: AccountDataStoreManager,
     private val dailyWeatherDataSource: DailyWeatherDataSource,
     private val hourlyWeatherDataSource: HourlyWeatherDataSource,
+    private val bookmarksDataSource: BookmarksDataSource,
     private val locationPrefs: LocationDataStoreManager
 ) {
 
@@ -43,7 +47,7 @@ class LocalRepository @Inject constructor(
         return accountDataSource.updateProfilePicture(id, profilePicture)
     }
 
-    suspend fun updateBookmark(id: Long, bookmark: List<Result>) : Int {
+    suspend fun updateBookmark(id: Long, bookmark: MutableList<Result>) : Int {
         return accountDataSource.updateBookmark(id, bookmark)
     }
 
@@ -118,5 +122,17 @@ class LocalRepository @Inject constructor(
 
     fun getLocation(): LiveData<Location> {
         return locationPrefs.getLocation().asLiveData()
+    }
+
+    fun insertBookmarks(bookmarksEntity: BookmarksEntity): Long {
+        return bookmarksDataSource.insertBookmarks(bookmarksEntity)
+    }
+
+    fun updateBookmarks(bookmarksEntity: BookmarksEntity): Int {
+        return bookmarksDataSource.updateBookmarks(bookmarksEntity)
+    }
+
+    fun getBookmarks(): BookmarksEntity? {
+        return bookmarksDataSource.getBookmarks()
     }
 }

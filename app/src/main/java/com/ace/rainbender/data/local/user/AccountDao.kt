@@ -28,5 +28,5 @@ interface AccountDao {
     suspend fun updateProfilePic(accountId: Long, profilePicture: String) : Int
 
     @Query("UPDATE ACCOUNT_INFORMATION SET bookmark = :bookmark WHERE accountId = :accountId " )
-    suspend fun updateBookmark(accountId: Long, bookmark: List<Result>) : Int
+    suspend fun updateBookmark(accountId: Long, bookmark: MutableList<Result>) : Int
 }
