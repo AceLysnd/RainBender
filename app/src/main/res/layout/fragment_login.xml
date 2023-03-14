@@ -11,6 +11,16 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="10dp">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/rainbender_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_login_headline"
             style="@style/Headline"
@@ -19,7 +29,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/greetings"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_username"
