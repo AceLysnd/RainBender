@@ -92,13 +92,6 @@ class ProfileFragment : Fragment() {
             placeholder(R.drawable.ic_image)
             transformations(RoundedCornersTransformation())
         }
-
-//        Glide.with(binding.ivProfilePic.context)
-//            .load(bitmap)
-//            .centerCrop()
-//            .placeholder(R.drawable.ic_image)
-//            .into(binding.ivProfilePic)
-
     }
 
     private fun setOnclickListeners() {
@@ -106,6 +99,7 @@ class ProfileFragment : Fragment() {
             viewModel.setLoginStatus(false)
             val intent = Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
+            requireActivity().finish()
         }
 
         binding.btnUpdateProfile.setOnClickListener {

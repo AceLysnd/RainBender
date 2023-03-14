@@ -36,7 +36,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), LocationListener {
+class MainActivity : AppCompatActivity(){
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -130,7 +130,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun goToProfile() {
-//        findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
         loadFragment(ProfileFragment())
         supportActionBar!!.hide()
         onBackPressed = 1
@@ -198,8 +197,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionCode)
         }
-        locationManager.removeUpdates(this)
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
 
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
@@ -217,15 +214,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
             }
 
-    }
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onLocationChanged(location: Location) {
-        val geocoder = Geocoder(this, Locale.getDefault())
-
-        val list: List<Address> =
-            geocoder.getFromLocation(location.latitude, location.longitude, 1)
-
-        Toast.makeText(this,list[0].getAddressLine(0).toString(), Toast.LENGTH_LONG).show()
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
