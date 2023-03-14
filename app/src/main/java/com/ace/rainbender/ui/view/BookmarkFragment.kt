@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,8 +15,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ace.rainbender.R
+import com.ace.rainbender.data.local.localBookmarks.BookmarksEntity
+import com.ace.rainbender.data.local.user.AccountEntity
 import com.ace.rainbender.data.model.geocoding.Result
 import com.ace.rainbender.databinding.FragmentBookmarkBinding
+import com.ace.rainbender.ui.adapter.BookmarkItemListener
 import com.ace.rainbender.ui.adapter.BookmarksAdapter
 import com.ace.rainbender.ui.viewmodel.BookmarksViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +35,9 @@ class BookmarkFragment : Fragment() {
 
     lateinit var rvBookmarks: RecyclerView
 
+    var accountEntity: AccountEntity? = null
+    var bookmarksEntity: BookmarksEntity? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +47,8 @@ class BookmarkFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,6 +56,8 @@ class BookmarkFragment : Fragment() {
 
         setLayout()
         setAdapter()
+
+        bookmarksEntity = viewModel.getBookmarks()
 
         var username = ""
         viewModel.getAccount().observe(viewLifecycleOwner){
@@ -56,6 +67,9 @@ class BookmarkFragment : Fragment() {
         }
 
         viewModel.getUser.observe(viewLifecycleOwner){
+
+            accountEntity = it
+
             binding.pbPost.isVisible = true
             binding.rvBookmarks.isVisible = false
             bookmarksAdapter.setItems(it.bookmark)
@@ -85,8 +99,41 @@ class BookmarkFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        bookmarksAdapter = BookmarksAdapter(mutableListOf()) {result -> onResultClick(result) }
+        bookmarksAdapter = BookmarksAdapter(mutableListOf(), object : BookmarkItemListener{
+            override fun onItemClicked(item: Result, position: Int) {
+                onResultClick(item)
+            }
+
+            override fun onDeleteMenuClicker(item: Result) {
+                onDeleteMenuClicked(item)
+            }
+        })
         rvBookmarks.adapter = bookmarksAdapter
+    }
+
+    private fun onDeleteMenuClicked(item: Result) {
+        var bookmark = accountEntity!!.bookmark
+        bookmark!!.remove(item)
+
+        bookmarksEntity!!.bookmark!!.remove(item)
+
+        AlertDialog.Builder(requireActivity())
+            .setTitle("Delete Bookmark")
+            .setMessage("Are you sure to delete bookmark?")
+            .setPositiveButton(
+                "Yep"
+            ) { _, _ ->
+
+                viewModel.editBookmarks(bookmarksEntity!!)
+                viewModel.updateBookmark(accountEntity!!.accountId, bookmark)
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.nav_host, BookmarkFragment())
+                transaction.disallowAddToBackStack()
+                transaction.commit()
+
+            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            .show()
     }
 
     private fun onResultClick(result: Result) {

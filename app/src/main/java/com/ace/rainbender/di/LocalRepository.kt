@@ -132,7 +132,15 @@ class LocalRepository @Inject constructor(
         return bookmarksDataSource.updateBookmarks(bookmarksEntity)
     }
 
+    fun deleteBookmarks(bookmarksEntity: BookmarksEntity): Int {
+        return bookmarksDataSource.deleteBookmarks(bookmarksEntity)
+    }
+
     fun getBookmarks(): BookmarksEntity? {
         return bookmarksDataSource.getBookmarks()
+    }
+
+    fun getBookmarksById(accountId: Long): BookmarksEntity? {
+        return bookmarksDataSource.getBookmarksById(accountId)
     }
 }

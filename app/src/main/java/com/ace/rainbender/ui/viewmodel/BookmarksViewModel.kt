@@ -43,8 +43,16 @@ class BookmarksViewModel @Inject constructor(private val repository: LocalReposi
         repository.updateBookmarks(bookmarksEntity)
     }
 
+    fun deleteBookmarks(bookmarksEntity: BookmarksEntity){
+        repository.deleteBookmarks(bookmarksEntity)
+    }
+
     fun getBookmarks(): BookmarksEntity? {
         return repository.getBookmarks()
+    }
+
+    fun getBookmarksById(accountId: Long): BookmarksEntity? {
+        return repository.getBookmarksById(accountId)
     }
 
 }
