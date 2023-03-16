@@ -55,24 +55,16 @@ class HourlyWeatherAdapter (
                 tvHumidity.text = hourly.humidity.toString() + "%"
                 tvTime.text = hourly.time.subSequence(11, 16)
 
-                if (hourly.weatherCode == 0) {
-                    ivWeatherIcon.setImageResource(R.drawable.wesun)
-                } else if (hourly.weatherCode in 1..2) {
-                    ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
-                } else if (hourly.weatherCode in 3..48) {
-                    ivWeatherIcon.setImageResource(R.drawable.wecloudy)
-                } else if (hourly.weatherCode in 51..67) {
-                    ivWeatherIcon.setImageResource(R.drawable.werain)
-                } else if (hourly.weatherCode in 71..75) {
-                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                } else if (hourly.weatherCode == 77) {
-                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                } else if (hourly.weatherCode in 80..82) {
-                    ivWeatherIcon.setImageResource(R.drawable.werain)
-                } else if (hourly.weatherCode in 85..86) {
-                    ivWeatherIcon.setImageResource(R.drawable.wesnow)
-                } else if (hourly.weatherCode in 95..99) {
-                    ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
+                when (hourly.weatherCode) {
+                    0 -> ivWeatherIcon.setImageResource(R.drawable.wesun)
+                    77 -> ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    in 1..2 -> ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
+                    in 3..48 -> ivWeatherIcon.setImageResource(R.drawable.wecloudy)
+                    in 51..67 -> ivWeatherIcon.setImageResource(R.drawable.werain)
+                    in 71..75 -> ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    in 80..82 -> ivWeatherIcon.setImageResource(R.drawable.werain)
+                    in 85..86 -> ivWeatherIcon.setImageResource(R.drawable.wesnow)
+                    in 95..99 -> ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
                 }
             }
         }

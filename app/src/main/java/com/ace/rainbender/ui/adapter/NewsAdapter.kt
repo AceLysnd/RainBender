@@ -51,11 +51,15 @@ class NewsAdapter(
                 .centerCrop()
                 .placeholder(R.drawable.newsplaceholder)
                 .into(binding.ivNewsImage)
-            binding.ivNewsImage
-            binding.tvNewsTitle.text = item.title
-            binding.tvNewsText.text = item.content
-            binding.tvSource.text = item.source!!.name.toString()
-            binding.tvPublishDate.text = item.publishedAt!!.substring(0,10)
+
+            with(binding) {
+                ivNewsImage
+                tvNewsTitle.text = item.title
+                tvNewsText.text = item.content
+                tvSource.text = item.source!!.name.toString()
+                tvPublishDate.text = item.publishedAt!!.substring(0,10)
+            }
+
 
             itemView.setOnClickListener { onArticleClick.invoke(item) }
 

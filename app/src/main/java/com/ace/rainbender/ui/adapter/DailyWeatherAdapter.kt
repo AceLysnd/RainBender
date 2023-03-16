@@ -14,10 +14,11 @@ import java.time.format.DateTimeFormatter
 
 class DailyWeatherAdapter(
     private var dailyWeather: MutableList<DailyWeatherEntity>
-): RecyclerView.Adapter<DailyWeatherAdapter.DailyWeatherViewHolder>() {
+) : RecyclerView.Adapter<DailyWeatherAdapter.DailyWeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyWeatherViewHolder {
-        val binding = ItemDailyForecastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemDailyForecastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DailyWeatherViewHolder(binding)
     }
 
@@ -46,39 +47,30 @@ class DailyWeatherAdapter(
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(daily: DailyWeatherEntity) {
-            with(binding){
-                tvDate.text = daily.time.subSequence(8,10)
+            with(binding) {
+                tvDate.text = daily.time.subSequence(8, 10)
 
-                var monthFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val monthFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val date = LocalDate.parse(daily.time, monthFormatter)
-                var month = date.month.toString().substring(0,1).toUpperCase() +
+                var month = date.month.toString().substring(0, 1).toUpperCase() +
                         date.month.toString().substring(1).toLowerCase()
                 tvMonth.text = month
-                Log.d("date",daily.time)
+                Log.d("date", daily.time)
 
                 tvTempMin.text = daily.temperatureMin.toString()
                 tvTempMax.text = daily.temperatureMax.toString() + "°C"
 
-                if (daily.weatherCode == 0) {
-                    ivWeatherIcon.setImageResource(R.drawable.wesun)
-                } else if (daily.weatherCode in 1..2) {
-                    ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
-                } else if (daily.weatherCode in 3..48) {
-                    ivWeatherIcon.setImageResource(R.drawable.wecloudy)
-                } else if (daily.weatherCode in 51..67) {
-                    ivWeatherIcon.setImageResource(R.drawable.werain)
-                } else if (daily.weatherCode in 71..75) {
-                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                } else if (daily.weatherCode == 77) {
-                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                } else if (daily.weatherCode in 80..82) {
-                    ivWeatherIcon.setImageResource(R.drawable.werain)
-                } else if (daily.weatherCode in 85..86) {
-                    ivWeatherIcon.setImageResource(R.drawable.wesnow)
-                } else if (daily.weatherCode in 95..99) {
-                    ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
+                when (daily.weatherCode) {
+                    0 -> ivWeatherIcon.setImageResource(R.drawable.wesun)
+                    77 -> ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    in 1..2 -> ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
+                    in 3..48 -> ivWeatherIcon.setImageResource(R.drawable.wecloudy)
+                    in 51..67 -> ivWeatherIcon.setImageResource(R.drawable.werain)
+                    in 71..75 -> ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    in 80..82 -> ivWeatherIcon.setImageResource(R.drawable.werain)
+                    in 85..86 -> ivWeatherIcon.setImageResource(R.drawable.wesnow)
+                    in 95..99 -> ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
                 }
-
             }
         }
     }

@@ -38,4 +38,15 @@
     <string name="no_result">No result</string>
     <string name="update_profile">Update Profile</string>
     <string name="log_out">Log Out</string>
+    <string name="we_clear">Clear</string>
+    <string name="we_overcast">Overcast</string>
+    <string name="we_snow_grains">Snow grains</string>
+    <string name="we_partly_cloudy">Partly Cloudy</string>
+    <string name="we_fog">Fog</string>
+    <string name="we_drizzle">Drizzle</string>
+    <string name="we_rain">Rain</string>
+    <string name="we_snowfall">Snowfall</string>
+    <string name="we_rainshowers">Rain showers</string>
+    <string name="we_snowshow">Snow showers</string>
+    <string name="we_thunderstorm">Thunderstorm</string>
 </resources>

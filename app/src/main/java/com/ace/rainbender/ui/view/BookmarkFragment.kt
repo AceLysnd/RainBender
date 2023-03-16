@@ -72,7 +72,11 @@ class BookmarkFragment : Fragment() {
 
             binding.pbPost.isVisible = true
             binding.rvBookmarks.isVisible = false
-            bookmarksAdapter.setItems(it.bookmark)
+            if (it.bookmark.isNullOrEmpty()) {
+
+            } else {
+                bookmarksAdapter.setItems(it.bookmark)
+            }
             val postDelayed = Handler(Looper.myLooper()!!).postDelayed({
 
                 binding.pbPost.isVisible = false

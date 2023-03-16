@@ -133,40 +133,54 @@ class BookmarksDetail : Fragment() {
         val weatherCode = MainActivity.CURRENT_WEATHERCODE
 
         with(binding) {
-            if (weatherCode == 0) {
-                ivWeatherIcon.setImageResource(R.drawable.wesun)
-                tvWeather.text = "Clear"
-            } else if (weatherCode in 1..2) {
-                ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
-                tvWeather.text = "Partly Cloudy"
-            } else if (weatherCode == 3) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudy)
-                tvWeather.text = "Overcast"
-            } else if (weatherCode in 45..48) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudy)
-                tvWeather.text = "Fog"
-            } else if (weatherCode in 51..57) {
-                ivWeatherIcon.setImageResource(R.drawable.werain)
-                tvWeather.text = "Drizzle"
-            } else if (weatherCode in 61..67) {
-                ivWeatherIcon.setImageResource(R.drawable.werain)
-                tvWeather.text = "Rain"
-            }else if (weatherCode in 71..75) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                tvWeather.text = "Snowfall"
-            } else if (weatherCode == 77) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                tvWeather.text = "Snow grains"
-            } else if (weatherCode in 80..82) {
-                ivWeatherIcon.setImageResource(R.drawable.werain)
-                tvWeather.text = "Rain showers"
-            } else if (weatherCode in 85..86) {
-                ivWeatherIcon.setImageResource(R.drawable.wesnow)
-                tvWeather.text = "Snow showers"
-            } else if (weatherCode in 95..99) {
-                ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
-                tvWeather.text = "Thunderstorm"
+
+            when (weatherCode) {
+                0 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wesun)
+                    tvWeather.text = getString(R.string.we_clear)
+                }
+                3 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudy)
+                    tvWeather.text = getString(R.string.we_overcast)
+                }
+                77 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    tvWeather.text = getString(R.string.we_snow_grains)
+                }
+                in 1..2 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
+                    tvWeather.text = getString(R.string.we_partly_cloudy)
+                }
+                in 45..48 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudy)
+                    tvWeather.text = getString(R.string.we_fog)
+                }
+                in 51..57 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.werain)
+                    tvWeather.text = getString(R.string.we_drizzle)
+                }
+                in 61..67 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.werain)
+                    tvWeather.text = getString(R.string.we_rain)
+                }
+                in 71..75 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    tvWeather.text = getString(R.string.we_snowfall)
+                }
+                in 80..82 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.werain)
+                    tvWeather.text = getString(R.string.we_rainshowers)
+                }
+                in 85..86 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wesnow)
+                    tvWeather.text = getString(R.string.we_snowshow)
+                }
+                in 95..99 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
+                    tvWeather.text = getString(R.string.we_thunderstorm)
+                }
             }
+
         }
 
     }

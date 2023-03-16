@@ -30,8 +30,6 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
         return binding.root
 
-//        requireActivity().onBackPressedDispatcher
-
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 

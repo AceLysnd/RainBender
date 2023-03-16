@@ -95,7 +95,7 @@ class HomeFragment : Fragment() {
         loadWeatherIcon()
 
         binding.tvLocation.text = CURRENT_LOCATION
-        binding.tvTime.text = CURRENT_TIME.subSequence(11,16)
+        binding.tvTime.text = CURRENT_TIME.subSequence(11, 16)
         binding.tvTimezone.text = CURRENT_TIMEZONE
         binding.tvTemperature.text = CURRENT_TEMPERATURE + "°C"
 
@@ -106,16 +106,22 @@ class HomeFragment : Fragment() {
         tabLayout!!.addTab(tabLayout!!.newTab().setText("Tomorrow"))
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
 
-        val tabAdapter = TabAdapter((activity as AppCompatActivity).supportFragmentManager, tabLayout!!.tabCount, lifecycle)
+        val tabAdapter = TabAdapter(
+            (activity as AppCompatActivity).supportFragmentManager,
+            tabLayout!!.tabCount,
+            lifecycle
+        )
         viewPager!!.adapter = tabAdapter
 
         tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager!!.currentItem = tab.position
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {
 
             }
+
             override fun onTabReselected(tab: TabLayout.Tab) {
 
             }
@@ -126,39 +132,52 @@ class HomeFragment : Fragment() {
         val weatherCode = CURRENT_WEATHERCODE
 
         with(binding) {
-            if (weatherCode == 0) {
-                ivWeatherIcon.setImageResource(R.drawable.wesun)
-                tvWeather.text = "Clear"
-            } else if (weatherCode in 1..2) {
-                ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
-                tvWeather.text = "Partly Cloudy"
-            } else if (weatherCode == 3) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudy)
-                tvWeather.text = "Overcast"
-            } else if (weatherCode in 45..48) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudy)
-                tvWeather.text = "Fog"
-            } else if (weatherCode in 51..57) {
-                ivWeatherIcon.setImageResource(R.drawable.werain)
-                tvWeather.text = "Drizzle"
-            } else if (weatherCode in 61..67) {
-                ivWeatherIcon.setImageResource(R.drawable.werain)
-                tvWeather.text = "Rain"
-            }else if (weatherCode in 71..75) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                tvWeather.text = "Snowfall"
-            } else if (weatherCode == 77) {
-                ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
-                tvWeather.text = "Snow grains"
-            } else if (weatherCode in 80..82) {
-                ivWeatherIcon.setImageResource(R.drawable.werain)
-                tvWeather.text = "Rain showers"
-            } else if (weatherCode in 85..86) {
-                ivWeatherIcon.setImageResource(R.drawable.wesnow)
-                tvWeather.text = "Snow showers"
-            } else if (weatherCode in 95..99) {
-                ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
-                tvWeather.text = "Thunderstorm"
+
+            when (weatherCode) {
+                0 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wesun)
+                    tvWeather.text = getString(R.string.we_clear)
+                }
+                3 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudy)
+                    tvWeather.text = getString(R.string.we_overcast)
+                }
+                77 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    tvWeather.text = getString(R.string.we_snow_grains)
+                }
+                in 1..2 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wesuncloudy)
+                    tvWeather.text = getString(R.string.we_partly_cloudy)
+                }
+                in 45..48 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudy)
+                    tvWeather.text = getString(R.string.we_fog)
+                }
+                in 51..57 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.werain)
+                    tvWeather.text = getString(R.string.we_drizzle)
+                }
+                in 61..67 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.werain)
+                    tvWeather.text = getString(R.string.we_rain)
+                }
+                in 71..75 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wecloudsnowy)
+                    tvWeather.text = getString(R.string.we_snowfall)
+                }
+                in 80..82 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.werain)
+                    tvWeather.text = getString(R.string.we_rainshowers)
+                }
+                in 85..86 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wesnow)
+                    tvWeather.text = getString(R.string.we_snowshow)
+                }
+                in 95..99 -> {
+                    ivWeatherIcon.setImageResource(R.drawable.wethunderstorm)
+                    tvWeather.text = getString(R.string.we_thunderstorm)
+                }
             }
         }
 
@@ -166,9 +185,9 @@ class HomeFragment : Fragment() {
 
     private fun setLayouts() {
         hourlyWeatherRv.layoutManager = LinearLayoutManager(
-                requireContext(),
-        LinearLayoutManager.HORIZONTAL,
-        false
+            requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
         )
         dailyWeatherRv.layoutManager = LinearLayoutManager(
             requireContext(),
@@ -204,16 +223,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.weatherForecast.observe(viewLifecycleOwner){
+        viewModel.weatherForecast.observe(viewLifecycleOwner) {
             loadHomeWeather(it)
             loadHourlyWeather(it.hourly!!)
             loadDailyWeather(it.daily!!)
         }
 
-        viewModel.dailyForecast.observe(viewLifecycleOwner){
+        viewModel.dailyForecast.observe(viewLifecycleOwner) {
             fetchDailyWeather(it)
         }
-        viewModel.hourlyForecast.observe(viewLifecycleOwner){
+        viewModel.hourlyForecast.observe(viewLifecycleOwner) {
             fetchHourlyWeather(it)
         }
     }
@@ -221,8 +240,8 @@ class HomeFragment : Fragment() {
     private var iDaily = 0
     private fun loadDailyWeather(daily: Daily) {
         if (iDaily < 7) {
-            val dailyWeather = DailyWeatherEntity (
-                dailyId = iDaily+1.toLong(),
+            val dailyWeather = DailyWeatherEntity(
+                dailyId = iDaily + 1.toLong(),
                 time = daily.time!![iDaily]!!,
                 temperatureMin = daily.temperature2mMin!![iDaily]!!,
                 temperatureMax = daily.temperature2mMax!![iDaily]!!,
@@ -232,9 +251,9 @@ class HomeFragment : Fragment() {
 
             iDaily += 1
             loadDailyWeather(daily)
-            Log.d("daitemp",daily.temperature2mMin[4].toString())
-            Log.d("daitemp",daily.temperature2mMin[5].toString())
-            Log.d("daitemp",daily.temperature2mMin[6].toString())
+            Log.d("daitemp", daily.temperature2mMin[4].toString())
+            Log.d("daitemp", daily.temperature2mMin[5].toString())
+            Log.d("daitemp", daily.temperature2mMin[6].toString())
         }
 
     }
@@ -242,8 +261,8 @@ class HomeFragment : Fragment() {
     private var iHourly = 0
     private fun loadHourlyWeather(hourly: Hourly) {
         if (iHourly < 49) {
-            val dailyWeather = HourlyWeatherEntity (
-                hourlyId = iHourly+1.toLong(),
+            val dailyWeather = HourlyWeatherEntity(
+                hourlyId = iHourly + 1.toLong(),
                 time = hourly.time!![iHourly]!!,
                 temperature = hourly.temperature2m!![iHourly]!!,
                 humidity = hourly.relativehumidity2m!![iHourly]!!,
@@ -253,7 +272,7 @@ class HomeFragment : Fragment() {
 
             iHourly += 1
             loadHourlyWeather(hourly)
-            Log.d("daitemp",hourly.temperature2m[0].toString())
+            Log.d("daitemp", hourly.temperature2m[0].toString())
 
         }
     }
@@ -268,8 +287,6 @@ class HomeFragment : Fragment() {
     }
 
 
-
-
     private fun fetchDailyWeather(daily: List<DailyWeatherEntity>) {
         dailyWeatherAdapter.addData(daily)
     }
@@ -277,11 +294,11 @@ class HomeFragment : Fragment() {
     private fun fetchHourlyWeather(hourly: List<HourlyWeatherEntity>) {
 
         hourlyWeatherAdapter.addData(hourly)
-        val position = Integer.parseInt(CURRENT_TIME.subSequence(11,13).toString())
+        val position = Integer.parseInt(CURRENT_TIME.subSequence(11, 13).toString())
         hourlyWeatherRv.layoutManager?.scrollToPosition(position)
     }
 
-    companion object{
+    companion object {
         var REFRESH = true
     }
 
